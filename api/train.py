@@ -1,14 +1,17 @@
 import logging
 import os
 from itertools import chain
+import sys
+
+sys.path.append('../')
 
 import hydra
 from omegaconf import DictConfig
-
+from models import MODELS
 from data_loader import get_dataset
 from factory.trainer import Trainer
 # from losses import LOSSES
-from models import MODELS
+
 from path_definition import HYDRA_PATH
 # from schedulers import SCHEDULERS
 # from utils.reporter import Reporter
@@ -30,11 +33,7 @@ def train(cfg: DictConfig):
     model = MODELS[cfg.model.type](cfg.model)
 
     cfg.save_dir = os.getcwd()
-
     Trainer(cfg, train_dataset, valid_dataset, model).train()
-
-
-
 
 
 if __name__ == '__main__':

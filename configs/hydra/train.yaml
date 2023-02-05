@@ -1,9 +1,11 @@
 defaults:
   - _self_
+  - model: random_forest
 
 train_dataset: Bitcoin
 valid_dataset: Bitcoin
 load_path:
+save_dir:
 dataset_path:
 train_start_date: 2019-11-24 09:30:00
 train_end_date: 2021-11-24 10:30:00

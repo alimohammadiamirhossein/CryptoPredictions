@@ -1,0 +1,8 @@
+defaults:
+  - _self_
+  - common
+
+type: random_forest
+n_estimators: 1000
+random_state: 42
+
