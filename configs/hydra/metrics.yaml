@@ -1,0 +1,8 @@
+metrics: #[]
+  - accuracy_score
+  - f1_score
+  - recall_score
+  -  precision_score
+  -  classification_report
+  -  confusion_matrix
+  - rmse

@@ -1,6 +1,7 @@
 defaults:
   - _self_
   - model: random_forest
+  - metrics
 
 train_dataset: Bitcoin
 valid_dataset: Bitcoin

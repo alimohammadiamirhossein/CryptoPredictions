@@ -16,8 +16,9 @@ class Evaluator:
         self.test_dataset = test_dataset
         self.test_dataset_X = np.array(test_dataset)[:, 1:-1]
         self.test_dataset_Y = np.array(test_dataset)[:,-1]
-        # self.metrics = args.metrics
-        self.metrics = ['f1_score']
+        print(args)
+        self.metrics = args.metrics
+        # self.metrics = ['f1_score']
         self.is_regression = args.model.is_regression
 
     def evaluate(self):

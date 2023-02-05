@@ -60,7 +60,7 @@ def confusion_matrix(pred, target, is_regression=False):
     return conf
 
 
-def rmse(pred, target):
+def rmse(pred, target, is_regression=False):
     rmse = math.sqrt(np.square(np.subtract(pred, target)).mean())
     # print('\n RMSE:', "{:.2f}".format(rmse))
     return rmse
