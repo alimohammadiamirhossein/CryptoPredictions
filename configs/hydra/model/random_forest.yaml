@@ -5,4 +5,5 @@ defaults:
 type: random_forest
 n_estimators: 1000
 random_state: 42
+is_regression: True
 
