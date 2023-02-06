@@ -1,0 +1,12 @@
+numpy~=1.19
+scipy~=1.6
+matplotlib
+scikit-learn
+pillow
+jupyter
+pandas~=1.2
+jsonlines
+hydra-core
+seaborn
+omegaconf
+tqdm

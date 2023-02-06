@@ -3,7 +3,7 @@ import os
 from itertools import chain
 import sys
 
-sys.path.append('../')
+# sys.path.append('../')
 
 import hydra
 from omegaconf import DictConfig
