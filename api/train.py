@@ -14,7 +14,7 @@ from factory.evaluator import Evaluator
 
 from path_definition import HYDRA_PATH
 # from schedulers import SCHEDULERS
-# from utils.reporter import Reporter
+from utils.reporter import Reporter
 # from utils.save_load import load_snapshot, save_snapshot, setup_training_dir
 
 logger = logging.getLogger(__name__)
@@ -31,10 +31,11 @@ def train(cfg: DictConfig):
     valid_dataset = get_dataset(cfg.valid_dataset, cfg.valid_start_date, cfg.valid_end_date, cfg)
 
     model = MODELS[cfg.model.type](cfg.model)
+    reporter = Reporter(cfg)
 
     cfg.save_dir = os.getcwd()
     Trainer(cfg, train_dataset, None, model).train()
-    Evaluator(cfg, test_dataset=valid_dataset, model=model).evaluate()
+    Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
 
 
 if __name__ == '__main__':

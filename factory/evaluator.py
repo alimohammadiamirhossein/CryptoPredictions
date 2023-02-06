@@ -9,8 +9,10 @@ from path_definition import *
 from os.path import join
 from metrics import METRICS
 
+
+
 class Evaluator:
-    def __init__(self, args, test_dataset, model):
+    def __init__(self, args, test_dataset, model, reporter):
         self.args = args
         self.model = model
         self.test_dataset = test_dataset
@@ -18,6 +20,7 @@ class Evaluator:
         self.test_dataset_Y = np.array(test_dataset)[:,-1]
         print(args)
         self.metrics = args.metrics
+        self.reporter = reporter
         # self.metrics = ['f1_score']
         self.is_regression = args.model.is_regression
 
@@ -30,6 +33,7 @@ class Evaluator:
         for metric_name in self.metrics:
             metric_func = METRICS[metric_name]
             metric_value = metric_func(predicted_df, self.test_dataset_Y, self.is_regression)
+
             print(f'{metric_name}: {metric_value}')
 
 
