@@ -1,0 +1,10 @@
+defaults:
+  - _self_
+  - common
+
+type: sarimax
+order: 0, 1, 1
+seasonal_order: 0, 0, 1, 12
+enforce_invertibility: False
+enforce_stationarity: False
+is_regression: True

@@ -24,7 +24,7 @@ def get_dataset(dataset_name, start_date, end_date, args):
         else:
             end_date = datetime.strptime(end_date, '%Y-%m-%d %H:%M:%S')
 
-        btc = BTCDataset(main_features=main_features, start_date=start_date, end_date=end_date)
+        btc = BTCDataset(main_features=main_features, start_date=start_date, end_date=end_date, window_size=args.window_size)
         dataset = btc.get_dataset()
 
     return dataset
