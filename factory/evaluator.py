@@ -18,7 +18,6 @@ class Evaluator:
         self.test_dataset = test_dataset
         self.test_dataset_X = np.array(test_dataset)[:, 1:-1]
         self.test_dataset_Y = np.array(test_dataset)[:,-1]
-        print(args)
         self.metrics = args.metrics
         self.reporter = reporter
         # self.metrics = ['f1_score']
@@ -33,12 +32,11 @@ class Evaluator:
         for metric_name in self.metrics:
             metric_func = METRICS[metric_name]
             metric_value = metric_func(predicted_df, self.test_dataset_Y, self.is_regression)
+            self.reporter.update_metric(metric_name, metric_value)
 
-            print(f'{metric_name}: {metric_value}')
 
-
-        logger.info("-" * 100)
-        logger.info('Training is completed in %.2f seconds.' % (time.time() - time0))
+        self.reporter.print_pretty_metrics(logger)
+        # logger.info('Training is completed in %.2f seconds.' % (time.time() - time0))
 
 
 
