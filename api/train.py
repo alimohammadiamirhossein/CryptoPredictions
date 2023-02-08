@@ -12,6 +12,7 @@ from data_loader import get_dataset
 from factory.trainer import Trainer
 from factory.evaluator import Evaluator
 
+from sklearn.model_selection import TimeSeriesSplit
 from path_definition import HYDRA_PATH
 # from schedulers import SCHEDULERS
 from utils.reporter import Reporter
@@ -27,17 +28,31 @@ def train(cfg: DictConfig):
         logger.error(msg)
         raise Exception(msg)
 
-    train_dataset = get_dataset(cfg.train_dataset, cfg.train_start_date, cfg.train_end_date, cfg)
-    valid_dataset = get_dataset(cfg.valid_dataset, cfg.valid_start_date, cfg.valid_end_date, cfg)
-
-    model = MODELS[cfg.model.type](cfg.model)
-    reporter = Reporter(cfg)
-
-    reporter.setup_saving_dirs(cfg.save_dir)
-
     cfg.save_dir = os.getcwd()
-    Trainer(cfg, train_dataset, None, model).train()
-    Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
+    reporter = Reporter(cfg)
+    reporter.setup_saving_dirs(cfg.save_dir)
+    model = MODELS[cfg.model.type](cfg.model)
+
+
+    if cfg.validation_method == 'simple':
+        train_dataset = get_dataset(cfg.train_dataset, cfg.train_start_date, cfg.train_end_date, cfg)
+        valid_dataset = get_dataset(cfg.valid_dataset, cfg.valid_start_date, cfg.valid_end_date, cfg)
+        Trainer(cfg, train_dataset, None, model).train()
+        Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
+
+    elif cfg.validation_method == 'cross_validation':
+        dataset = get_dataset(cfg.train_dataset, cfg.train_start_date, cfg.valid_end_date, cfg)
+        n_split = dataset.shape[0]//365
+        tscv = TimeSeriesSplit(n_splits=n_split)
+        rmse = []
+        for train_index, test_index in tscv.split(dataset):
+            train_dataset, valid_dataset = dataset.iloc[train_index], dataset.iloc[test_index]
+            Trainer(cfg, train_dataset, None, model).train()
+            Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
+
+
+        # Trainer(cfg, train_dataset, None, model).train()
+        # Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
 
 
 if __name__ == '__main__':
