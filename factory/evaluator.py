@@ -30,7 +30,7 @@ class Evaluator:
 
         predicted_df = self.model.predict(self.test_dataset_X)
 
-        print(12321, predicted_df, self.test_dataset_Y.shape, self.test_dataset_X.shape)
+        # print(12321, predicted_df, self.test_dataset_Y.shape, self.test_dataset_X.shape)
 
         for metric_name in self.metrics:
             metric_func = METRICS[metric_name]

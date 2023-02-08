@@ -11,8 +11,8 @@ def get_dataset(dataset_name, start_date, end_date, args):
     assert dataset_name in DATASETS, \
         f"Dataset {args.dataset_name} is not available."
     if dataset_name == 'Bitcoin':
-        main_features = ['High', 'Low', 'Close', 'Open', 'Mean']
-        main_features = ['High', 'Low', 'Mean']
+        main_features = ['High', 'Volume', 'Low', 'Close', 'Open', 'Mean']
+        # main_features = ['High', 'Low', 'Mean']
 
         if start_date == "-1":
             start_date = None
