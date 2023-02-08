@@ -13,6 +13,8 @@ class Sarimax:
 
     def __init__(self, args):
         print(args)
+        self.train_size = -1
+        self.test_size = -1
         self.order = tuple(map(int, args.order.split(', ')))
         self.seasonal_order = tuple(map(int, args.seasonal_order.split(', ')))
         self.enforce_invertibility = args.enforce_invertibility
@@ -22,7 +24,6 @@ class Sarimax:
         data_x = np.array(data_x)
         train_x = data_x[:, 1:-1]
         train_y = data_x[:, -1]
-        print(self.order)
         self.train_size = train_x.shape[0]
         train_x = self.sc_in.fit_transform(train_x)
         train_y = train_y.reshape(-1, 1)
@@ -40,8 +41,9 @@ class Sarimax:
         test_x = np.array(test_x, dtype=float)
         test_x = self.sc_in.transform(test_x)
         self.test_size = test_x.shape[0]
-        # pred_y = self.result.predict(start=self.train_size, end=self.train_size + self.test_size - 1, exog=test_x)
-        pred_y = self.result.predict(exog=test_x)
+        pred_y = self.result.predict(start=self.train_size, end=self.train_size + self.test_size - 1, exog=test_x)
+        # pred_y = self.result.predict(exog=test_x)
+        print(pred_y.shape, test_x.shape)
         pred_y = pred_y.reshape(-1, 1)
         pred_y = self.sc_out.inverse_transform(pred_y)
         return pred_y

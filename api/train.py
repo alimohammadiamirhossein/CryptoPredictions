@@ -33,6 +33,8 @@ def train(cfg: DictConfig):
     model = MODELS[cfg.model.type](cfg.model)
     reporter = Reporter(cfg)
 
+    reporter.setup_saving_dirs(cfg.save_dir)
+
     cfg.save_dir = os.getcwd()
     Trainer(cfg, train_dataset, None, model).train()
     Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()

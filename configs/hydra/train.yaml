@@ -1,12 +1,12 @@
 defaults:
   - _self_
-  - model: random_forest #sarimax
+  - model: sarimax #random_forest #sarimax #
   - metrics
 
 train_dataset: Bitcoin
 valid_dataset: Bitcoin
 load_path:
-save_dir:
+save_dir: ./save1
 dataset_path:
 window_size: 1
 train_start_date: 2019-11-24 09:30:00
