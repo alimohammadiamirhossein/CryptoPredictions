@@ -16,7 +16,7 @@ class Evaluator:
         self.args = args
         self.model = model
         self.test_dataset = test_dataset
-        self.test_dataset_Y = test_dataset.prediction
+        self.test_dataset_Y = np.array(test_dataset.prediction)
         self.dates = test_dataset.Date
         self.test_dataset_X = test_dataset.drop(['prediction'], axis=1)
         self.metrics = args.metrics
