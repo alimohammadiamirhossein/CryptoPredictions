@@ -43,6 +43,7 @@ def train(cfg: DictConfig):
     elif cfg.validation_method == 'cross_validation':
         dataset = get_dataset(cfg.train_dataset, cfg.train_start_date, cfg.valid_end_date, cfg)
         n_split = dataset.shape[0]//365
+        n_split = 2
         tscv = TimeSeriesSplit(n_splits=n_split)
         rmse = []
         for train_index, test_index in tscv.split(dataset):
@@ -50,6 +51,7 @@ def train(cfg: DictConfig):
             Trainer(cfg, train_dataset, None, model).train()
             Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
 
+        reporter.add_average()
         reporter.print_pretty_metrics(logger)
         reporter.save_metrics()
 

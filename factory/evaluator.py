@@ -31,7 +31,7 @@ class Evaluator:
         predicted_df = self.model.predict(self.test_dataset_X)
 
         # print(12321, predicted_df, self.test_dataset_Y.shape, self.test_dataset_X.shape)
-
+        self.reporter.new_cross_started()
         for metric_name in self.metrics:
             metric_func = METRICS[metric_name]
             metric_value = metric_func(predicted_df, self.test_dataset_Y, self.is_regression)
@@ -40,6 +40,7 @@ class Evaluator:
 
         if self.is_regression:
             self.reporter.plot_continues_data(self.dates, self.test_dataset_Y, predicted_df)
+
         # logger.info('Training is completed in %.2f seconds.' % (time.time() - time0))
 
 

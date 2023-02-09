@@ -13,40 +13,67 @@ class Reporter:
         self.args = args
         self.parent_dir = args.save_dir
         self.plot_counter = 0
+        self.df_of_cross_validation = None
+        self.counter_cross_validation = -1
         self.setup()
 
     def setup(self):
         self.metrics = {}
+        cols = []
         for item in self.args.metrics:
             self.metrics[item] = AverageMeter()
+            cols.append(item)
+        self.df_of_cross_validation = pd.DataFrame(columns=cols)
+        # self.add_new_row_to_data_frame()
 
     def update_metric(self, metric_name, value):
         if isinstance(value, float):
             self.metrics[metric_name].update(value)
+            self.df_of_cross_validation.iloc[self.counter_cross_validation][metric_name] = value
+
+    def add_new_row_to_data_frame(self, index_=None):
+        df1 = {}
+        for item in self.args.metrics:
+            df1[item] = None
+        if index_ is None:
+            index_ = self.counter_cross_validation
+        df1 = pd.DataFrame(df1, index=[index_])
+        self.df_of_cross_validation = pd.concat([self.df_of_cross_validation, df1])
+
+    def new_cross_started(self):
+        self.counter_cross_validation = self.counter_cross_validation + 1
+        self.add_new_row_to_data_frame(f"validation-{self.counter_cross_validation}")
 
     def setup_saving_dirs(self, parent_dir):
         os.makedirs(os.path.join(parent_dir, 'plots'), exist_ok=False)
         os.makedirs(os.path.join(parent_dir, 'metrics_history'), exist_ok=False)
 
-    def print_pretty_metrics(self, logger):
-        if len(self.metrics) > 0:
-            logger.info(f'Metrics Result:')
+    def add_average(self):
+        self.counter_cross_validation = self.counter_cross_validation + 1
+        self.add_new_row_to_data_frame(f"average")
         for metric_name, metric_value in self.metrics.items():
-            value = str(metric_value.get_average())
-            if isinstance(metric_value.get_average(), float):
-                value = "{:.2f}".format(metric_value.get_average())
-            logger.info(f'\n{metric_name}:\n{value}')
+            self.update_metric(metric_name, metric_value.get_average())
+
+    def print_pretty_metrics(self, logger):
+        result = "\n"
+        str_ = '|'.join([''.ljust(15)] + [a.center(15) for a in self.metrics.keys()])
+        result += (str_ + '\n')
+        for index, row in self.df_of_cross_validation.iterrows():
+            str_ = '|'.join([index.ljust(15)] + ["{:.2f}".format(a).center(15) for a in list(row)])
+            result += (str_ + '\n')
+        logger.info(result)
 
     def save_metrics(self):
+        address = os.path.join(self.parent_dir, 'metrics_history', f'metrics.csv')
+        self.df_of_cross_validation.to_csv(address)
         with open(os.path.join(self.parent_dir, 'metrics_history', f'metrics.txt'), "w") as text_file:
-            if len(self.metrics) > 0:
-                text_file.write(f'Metrics Result:')
-            for metric_name, metric_value in self.metrics.items():
-                value = str(metric_value.get_average())
-                if isinstance(metric_value.get_average(), float):
-                    value = "{:.2f}".format(metric_value.get_average())
-                text_file.write(f'\n\n{metric_name}:\n{value}')
-
+            result = "\n"
+            str_ = '|'.join([''.ljust(15)] + [a.center(15) for a in self.metrics.keys()])
+            result += (str_ + '\n')
+            for index, row in self.df_of_cross_validation.iterrows():
+                str_ = '|'.join([index.ljust(15)] + ["{:.2f}".format(a).center(15) for a in list(row)])
+                result += (str_ + '\n')
+            text_file.write(result)
 
     def plot_continues_data(self, dates, testX, predicted_df):
         plt.figure(figsize=(25, 15), dpi=80, facecolor='w', edgecolor='k')
