@@ -38,11 +38,8 @@ class Evaluator:
             self.reporter.update_metric(metric_name, metric_value)
 
 
-        self.reporter.print_pretty_metrics(logger)
-        self.reporter.save_metrics()
-
         if self.is_regression:
-            self.reporter.plot_continues_data(self.dates ,self.test_dataset_Y, predicted_df)
+            self.reporter.plot_continues_data(self.dates, self.test_dataset_Y, predicted_df)
         # logger.info('Training is completed in %.2f seconds.' % (time.time() - time0))
 
 

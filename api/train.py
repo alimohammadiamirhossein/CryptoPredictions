@@ -50,6 +50,10 @@ def train(cfg: DictConfig):
             Trainer(cfg, train_dataset, None, model).train()
             Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
 
+        reporter.print_pretty_metrics(logger)
+        reporter.save_metrics()
+
+
 
         # Trainer(cfg, train_dataset, None, model).train()
         # Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()

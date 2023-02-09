@@ -5,7 +5,7 @@ import json
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
+from .average_meter import AverageMeter
 
 class Reporter:
     def __init__(self, args):
@@ -18,10 +18,11 @@ class Reporter:
     def setup(self):
         self.metrics = {}
         for item in self.args.metrics:
-            self.metrics[item] = None
+            self.metrics[item] = AverageMeter()
 
     def update_metric(self, metric_name, value):
-        self.metrics[metric_name] = value
+        if isinstance(value, float):
+            self.metrics[metric_name].update(value)
 
     def setup_saving_dirs(self, parent_dir):
         os.makedirs(os.path.join(parent_dir, 'plots'), exist_ok=False)
@@ -31,9 +32,9 @@ class Reporter:
         if len(self.metrics) > 0:
             logger.info(f'Metrics Result:')
         for metric_name, metric_value in self.metrics.items():
-            value = str(metric_value)
-            if isinstance(metric_value, float):
-                value = "{:.2f}".format(metric_value)
+            value = str(metric_value.get_average())
+            if isinstance(metric_value.get_average(), float):
+                value = "{:.2f}".format(metric_value.get_average())
             logger.info(f'\n{metric_name}:\n{value}')
 
     def save_metrics(self):
@@ -41,9 +42,9 @@ class Reporter:
             if len(self.metrics) > 0:
                 text_file.write(f'Metrics Result:')
             for metric_name, metric_value in self.metrics.items():
-                value = str(metric_value)
-                if isinstance(metric_value, float):
-                    value = "{:.2f}".format(metric_value)
+                value = str(metric_value.get_average())
+                if isinstance(metric_value.get_average(), float):
+                    value = "{:.2f}".format(metric_value.get_average())
                 text_file.write(f'\n\n{metric_name}:\n{value}')
 
 

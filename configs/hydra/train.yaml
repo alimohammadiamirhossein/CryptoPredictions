@@ -1,6 +1,6 @@
 defaults:
   - _self_
-  - model: sarimax #random_forest #sarimax #
+  - model: random_forest #sarimax #
   - metrics
 
 train_dataset: Bitcoin
