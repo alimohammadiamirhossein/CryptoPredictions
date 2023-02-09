@@ -1,0 +1,14 @@
+defaults:
+  - _self_
+  - common
+
+type: orbit
+response_col: prediction
+date_col: Date
+estimator: stan-mcmc
+seasonality: 365
+seed: 8888
+global_trend_option: linear
+n_bootstrap_draws: 1000
+is_regression: True
+
