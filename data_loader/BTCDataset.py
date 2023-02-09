@@ -103,8 +103,8 @@ class BTCDataset:
         counter_date = 0
         for i in range(data_x.shape[1] - 2):
             name = features[counter]
-            regressor_col.append(f'{name}_{dates[counter_date]}')
-            cols.append(f'{name}_{dates[counter_date]}')
+            regressor_col.append(f'{name}_day{counter_date}')
+            cols.append(f'{name}_day{counter_date}')
             counter += 1
             if counter >= len(features):
                 counter = 0

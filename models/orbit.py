@@ -13,10 +13,13 @@ class Orbit:
         self.n_bootstrap_draws = args.n_bootstrap_draws
 
     def fit(self, data_x):
+        print(data_x.shape)
         regressors = []
         for col in data_x.columns:
             if col != self.response_col and col != self.date_col:
                 regressors.append(col)
+        data_x[regressors] = data_x[regressors].astype(float)
+        data_x[self.response_col] = data_x[self.response_col].astype(float)
 
         self.model = DLT(
             response_col=self.response_col,
@@ -33,5 +36,11 @@ class Orbit:
         self.model.fit(data_x, point_method="mean")
 
     def predict(self, test_x):
+        regressors = []
+        for col in test_x.columns:
+            if col != self.response_col and col != self.date_col:
+                regressors.append(col)
+        test_x[regressors] = test_x[regressors].astype(float)
+        # test_x[self.response_col] = test_x[self.response_col].astype(float)
         predicted_df = self.model.predict(df=test_x)
-        return predicted_df
+        return predicted_df.prediction

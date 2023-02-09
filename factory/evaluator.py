@@ -16,9 +16,9 @@ class Evaluator:
         self.args = args
         self.model = model
         self.test_dataset = test_dataset
-        self.dates = np.array(test_dataset)[:,0]
-        self.test_dataset_X = np.array(test_dataset)[:, 1:-1]
-        self.test_dataset_Y = np.array(test_dataset)[:,-1]
+        self.test_dataset_Y = test_dataset.prediction
+        self.dates = test_dataset.Date
+        self.test_dataset_X = test_dataset.drop(['prediction'], axis=1)
         self.metrics = args.metrics
         self.reporter = reporter
         # self.metrics = ['f1_score']
