@@ -19,6 +19,7 @@ class RandomForest:
         self.model.fit(train_x, train_y)
 
     def predict(self, test_x):
+        test_x = np.array(test_x.iloc[:, 1:], dtype=float)
         pred_y = self.model.predict(test_x)
         return pred_y
 

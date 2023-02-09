@@ -39,7 +39,7 @@ class Sarimax:
         self.result = self.model.fit()
 
     def predict(self, test_x):
-        test_x = np.array(test_x, dtype=float)
+        test_x = np.array(test_x.iloc[:, 1:], dtype=float)
         test_x = self.sc_in.transform(test_x)
         self.test_size = test_x.shape[0]
         pred_y = self.result.predict(start=self.train_size, end=self.train_size + self.test_size - 1, exog=test_x)
