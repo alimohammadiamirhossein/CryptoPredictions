@@ -1,0 +1,8 @@
+defaults:
+  - _self_
+  - common
+
+name: 'BTC_bitmex'
+binsize: 1h
+batch_size: 750
+type: "XBTUSD"
