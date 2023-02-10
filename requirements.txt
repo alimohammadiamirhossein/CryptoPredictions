@@ -6,8 +6,9 @@ pillow
 jupyter
 pandas~=1.2
 jsonlines
-orbit-ml
 hydra-core
 seaborn
 omegaconf
 tqdm
+orbit-ml
+bitmex

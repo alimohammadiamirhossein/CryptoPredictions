@@ -33,20 +33,26 @@ def train(cfg: DictConfig):
     reporter.setup_saving_dirs(cfg.save_dir)
     model = MODELS[cfg.model.type](cfg.model)
 
+    dataset = get_dataset(cfg.dataset.name, cfg.dataset.train_start_date, cfg.dataset.valid_end_date, cfg)
+    print(dataset)
+
+
 
     if cfg.validation_method == 'simple':
-        train_dataset = get_dataset(cfg.train_dataset, cfg.train_start_date, cfg.train_end_date, cfg)
-        valid_dataset = get_dataset(cfg.valid_dataset, cfg.valid_start_date, cfg.valid_end_date, cfg)
+        train_dataset = dataset[
+            (dataset['Date'] > cfg.dataset.train_start_date) & (dataset['Date'] < cfg.dataset.train_end_date)]
+        valid_dataset = dataset[
+            (dataset['Date'] > cfg.dataset.valid_start_date) & (dataset['Date'] < cfg.dataset.valid_end_date)]
+        
         Trainer(cfg, train_dataset, None, model).train()
         Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
         reporter.print_pretty_metrics(logger)
         reporter.save_metrics()
 
     elif cfg.validation_method == 'cross_validation':
-        dataset = get_dataset(cfg.train_dataset, cfg.train_start_date, cfg.valid_end_date, cfg)
         n_split = dataset.shape[0]//365
         tscv = TimeSeriesSplit(n_splits=n_split)
-        rmse = []
+
         for train_index, test_index in tscv.split(dataset):
             train_dataset, valid_dataset = dataset.iloc[train_index], dataset.iloc[test_index]
             Trainer(cfg, train_dataset, None, model).train()

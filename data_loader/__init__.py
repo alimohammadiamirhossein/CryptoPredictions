@@ -1,7 +1,8 @@
 from .BTCDataset import BTCDataset
+from .BTC_bitmex import BitmexDataset
 from datetime import datetime
 
-DATASETS = ['Bitcoin']
+DATASETS = ['Bitcoin', 'BTC_bitmex']
 DATA_TYPES = ['train', 'validation', 'test']
 
 
@@ -25,6 +26,10 @@ def get_dataset(dataset_name, start_date, end_date, args):
             end_date = datetime.strptime(end_date, '%Y-%m-%d %H:%M:%S')
 
         btc = BTCDataset(main_features=main_features, start_date=start_date, end_date=end_date, window_size=args.window_size)
+        dataset = btc.get_dataset()
+
+    elif dataset_name == 'BTC_bitmex':
+        btc = BitmexDataset(args.dataset)
         dataset = btc.get_dataset()
 
     return dataset
