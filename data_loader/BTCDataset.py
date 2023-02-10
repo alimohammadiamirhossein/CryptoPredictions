@@ -3,6 +3,7 @@ import logging
 import pandas as pd
 import numpy as np
 from datetime import datetime
+from .creator import create_dataset
 
 logger = logging.getLogger(__name__)
 
@@ -78,43 +79,12 @@ class BTCDataset:
         # prediction mean based upon open
         dates = df.Date[start_index:end_index]
         df = df.drop('Date', axis=1)
-        arr = np.array(df, dtype='float32')
+        arr = np.array(df)
         arr = arr[start_index:end_index]
         features = df.columns
 
-        self.create_dataset(arr, list(dates), look_back=window_size, features=features)
+        self.dataset = create_dataset(arr, list(dates), look_back=window_size, features=features)
 
-    def create_dataset(self, dataset, dates, look_back, features):
-        data_x = []
-        for i in range(len(dataset) - look_back - 1):
-            a = dataset[i:(i + look_back), :]
-            a = a.reshape(-1)
-            b = [dates[i]]
-            b = b + a.tolist()
-            b.append(dataset[(i + look_back), :][-1])
-            data_x.append(b)
-        data_x = np.array(data_x)
-
-        date_col = "Date"
-        response_col = "prediction"
-        regressor_col = []
-        cols = ['Date']
-        counter = 0
-        counter_date = 0
-        for i in range(data_x.shape[1] - 2):
-            name = features[counter]
-            regressor_col.append(f'{name}_day{counter_date}')
-            cols.append(f'{name}_day{counter_date}')
-            counter += 1
-            if counter >= len(features):
-                counter = 0
-                counter_date += 1
-
-        cols.append('prediction')
-
-        data_frame = pd.DataFrame(data_x, columns=cols)
-
-        self.dataset = data_frame
 
     def get_dataset(self):
         return self.dataset

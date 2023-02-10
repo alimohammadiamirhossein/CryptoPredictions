@@ -10,7 +10,8 @@ from bitmex import bitmex
 from datetime import timedelta, datetime
 from dateutil import parser
 from tqdm import tqdm_notebook #(Optional, used for progress-bars)
-
+from .creator import create_dataset
+import numpy as np
 
 
 logger = logging.getLogger(__name__)
@@ -31,6 +32,8 @@ class BitmexDataset:
         self.type = args.type
         self.bin = args.binsize
         self.bitmex_client = bitmex(test=False, api_key=bitmex_api_key, api_secret=bitmex_api_secret)
+        self.window_size = args.window_size
+        self.features = args.features
 
     ### FUNCTIONS
     def minutes_of_new_data(self, symbol, kline_size, data, source):
@@ -69,10 +72,16 @@ class BitmexDataset:
                                                              startTime=new_time).result()[0]
                 temp_df = pd.DataFrame(data)
                 data_df = data_df.append(temp_df)
-        data_df.set_index('timestamp', inplace=True)
-        if save and rounds > 0: data_df.to_csv(filename)
-        print('All caught up..!')
-        return data_df
+        data_df.set_index('Date', inplace=True)
+        data = self.create_dataset(data_df, self.window_size)
+        return data
+
+    def create_dataset(self, df, window_size):
+        dates = df['Date']
+        df = df.drop('Date', axis=1)
+        arr = np.array(df)
+        data = create_dataset(arr, list(dates), look_back=window_size, features=self.features)
+        return data
 
     def get_dataset(self):
         dataset = self.get_all_bitmex(self.type, self.bin, save=True)
