@@ -14,10 +14,8 @@ def create_dataset(dataset, dates, look_back, features):
         b.append(dataset[(i + look_back), :][-1])
         data_x.append(b)
 
-    print(13, data_x[0])
     data_x = np.array(data_x)
     y = data_x[:, 1:].astype(np.float)
-    print(12,data_x[0])
     cols = ['Date']
     counter = 0
     counter_date = 0
