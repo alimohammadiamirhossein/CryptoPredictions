@@ -10,7 +10,6 @@ from os.path import join
 from metrics import METRICS
 
 
-
 class Evaluator:
     def __init__(self, args, test_dataset, model, reporter):
         self.args = args
@@ -36,12 +35,8 @@ class Evaluator:
             metric_value = metric_func(predicted_df, self.test_dataset_Y, self.is_regression)
             self.reporter.update_metric(metric_name, metric_value)
 
-
         if self.is_regression:
             self.reporter.plot_continues_data(self.dates, self.test_dataset_Y, predicted_df)
-
-
-
 
 
 

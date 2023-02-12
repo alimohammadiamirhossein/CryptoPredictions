@@ -4,7 +4,6 @@ import numpy as np
 
 
 class RandomForest:
-    model = None
 
     def __init__(self, args):
         self.n_estimators = args.n_estimators

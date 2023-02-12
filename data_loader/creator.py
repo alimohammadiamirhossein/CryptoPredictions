@@ -8,7 +8,8 @@ def create_dataset(dataset, dates, look_back, features):
     for i in range(len(dataset) - look_back - 1):
         a = dataset[i:(i + look_back), :]
         a = a.reshape(-1)
-        d = datetime.strptime(str(dates[i]).split('+')[0], '%Y-%m-%d %H:%M:%S')
+        d = datetime.strptime(
+            str(dates[i]).split('+')[0].split('.')[0], '%Y-%m-%d %H:%M:%S')
         b = [d]
         b = b + a.tolist()
         b.append(dataset[(i + look_back), :][-1])
@@ -30,6 +31,5 @@ def create_dataset(dataset, dates, look_back, features):
     cols.append('prediction')
 
     data_frame = pd.DataFrame(data_x, columns=cols)
-
     return data_frame
 

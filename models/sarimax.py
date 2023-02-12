@@ -3,16 +3,12 @@ from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import pandas as pd
 
+
 class Sarimax:
-    model = None
-    result = None
-    train_size = -1
-    test_size = -1
     sc_in = MinMaxScaler(feature_range=(0, 1))
     sc_out = MinMaxScaler(feature_range=(0, 1))
 
     def __init__(self, args):
-        print(args)
         self.train_size = -1
         self.test_size = -1
         self.order = tuple(map(int, args.order.split(', ')))

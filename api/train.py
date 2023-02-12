@@ -62,10 +62,6 @@ def train(cfg: DictConfig):
     reporter.setup_saving_dirs(cfg.save_dir)
     model = MODELS[cfg.model.type](cfg.model)
 
-
-
-
-
     if cfg.validation_method == 'simple':
         train_dataset = dataset[
             (dataset['Date'] > cfg.dataset.train_start_date) & (dataset['Date'] < cfg.dataset.train_end_date)]
@@ -79,7 +75,7 @@ def train(cfg: DictConfig):
 
     elif cfg.validation_method == 'cross_validation':
         n_split = dataset.shape[0]//365
-        n_split = 6
+        n_split = 2
         tscv = TimeSeriesSplit(n_splits=n_split)
 
         for train_index, test_index in tscv.split(dataset):
@@ -95,7 +91,6 @@ def train(cfg: DictConfig):
 
         # Trainer(cfg, train_dataset, None, model).train()
         # Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
-
 
 if __name__ == '__main__':
     train()
