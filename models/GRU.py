@@ -5,13 +5,13 @@ import keras
 from keras import optimizers
 from keras.models import Sequential
 from keras.layers import Dense
-from keras.layers import LSTM
+from keras.layers import GRU
 from keras.layers import Activation, Dense,Dropout
 
 from sklearn.preprocessing import MinMaxScaler
 
 
-class MyLSTM:
+class MyGRU:
     sc_in = MinMaxScaler(feature_range=(0, 1))
     sc_out = MinMaxScaler(feature_range=(0, 1))
 
@@ -23,9 +23,9 @@ class MyLSTM:
 
 
     def create_model(self, shape_):
-        self.model.add(LSTM(self.hidden_dim, return_sequences=True, input_shape=(1, shape_)))
+        self.model.add(GRU(self.hidden_dim, return_sequences=True, input_shape=(1, shape_)))
         # model.add(LSTM(256, return_sequences=True,input_shape=(1, look_back)))
-        self.model.add(LSTM(self.hidden_dim))
+        self.model.add(GRU(self.hidden_dim))
         self.model.add(Dense(1))
         self.model.compile(loss='mean_squared_error', optimizer='adam')
 
