@@ -1,6 +1,6 @@
 defaults:
   - _self_
-  - model: gru #orbit - random_forest - sarimax - lstm - gru
+  - model: arima #orbit - random_forest - sarimax - lstm - gru
   - dataset: Bitcoin
   - metrics
 
