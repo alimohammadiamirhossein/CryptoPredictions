@@ -1,0 +1,9 @@
+defaults:
+  - _self_
+  - common
+
+type: prophet
+response_col: prediction
+date_col: Date
+is_regression: True
+

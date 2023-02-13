@@ -75,7 +75,7 @@ def train(cfg: DictConfig):
 
     elif cfg.validation_method == 'cross_validation':
         n_split = dataset.shape[0]//365
-        n_split = 2
+        n_split = 5
         tscv = TimeSeriesSplit(n_splits=n_split)
 
         for train_index, test_index in tscv.split(dataset):

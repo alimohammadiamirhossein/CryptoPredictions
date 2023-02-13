@@ -10,5 +10,7 @@ hydra-core
 seaborn
 omegaconf
 tqdm
-orbit-ml
 bitmex
+statsmodels
+keras
+tensorflow
