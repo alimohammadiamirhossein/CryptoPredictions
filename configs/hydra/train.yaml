@@ -1,6 +1,6 @@
 defaults:
   - _self_
-  - model: prophet #orbit - random_forest - sarimax - lstm - gru
+  - model: lstm #orbit - random_forest - sarimax - lstm - gru
   - dataset: Bitcoin
   - metrics
 

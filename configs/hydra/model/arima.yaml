@@ -3,5 +3,5 @@ defaults:
   - common
 
 type: arima
-order: 5, 1, 0  # 5, 1, 0  -  7, 7  -  7, 0, 7 -
+order: 5, 1, 0  # 5, 1, 0  -  7, 7  -  7, 0, 7 
 is_regression: True
