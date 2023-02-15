@@ -25,6 +25,11 @@ class Trainer:
         logger.info("-" * 100)
         logger.info('Training is completed in %.2f seconds.' % (time.time() - time0))
 
+    def prediction(self):
+        train_ = self.train_dataset.drop(['prediction'], axis=1)
+        predicted_df = self.model.predict(train_)
+        return predicted_df.reshape(-1)
+
 
 
 

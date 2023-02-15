@@ -2,7 +2,7 @@ defaults:
   - _self_
   - common
 
-type: lstm
+type: gru
 hidden_dim: 256
 epochs: 50
 is_regression: True

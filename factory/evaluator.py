@@ -38,5 +38,9 @@ class Evaluator:
         if self.is_regression:
             self.reporter.plot_continues_data(self.dates, self.test_dataset_Y, predicted_df)
 
+    def prediction(self):
+        predicted_df = self.model.predict(self.test_dataset_X)
+        return predicted_df.reshape(-1)
+
 
 

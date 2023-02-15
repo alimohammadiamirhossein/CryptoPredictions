@@ -1,11 +1,43 @@
 defaults:
   - _self_
   - model: lstm #orbit - random_forest - sarimax - lstm - gru - prophet
-  - dataset: Bitcoin
+  - dataset: BTC_bitmex #Bitcoin
   - metrics
 
 validation_method: cross_validation #simple - cross_validation
-load_path: #C:/Users/samen/Desktop/term9/forecasting/code/Data/hourly/XBTUSD-1h-data.csv
+load_path: C:/Users/samen/Desktop/term9/forecasting/code/Data/hourly/XBTUSD-1h-data.csv
 save_dir:
 dataset_path:
+
+models:
+  LSTM:
+    type: lstm
+    hidden_dim: 256
+    epochs: 50
+    is_regression: True
+
+  random_forest:
+    type: random_forest
+    n_estimators: 1000
+    random_state: 42
+    is_regression: True
+
+  sarimax:
+    type: sarimax
+    order: 0, 1, 1
+    seasonal_order: 0, 0, 1, 12
+    enforce_invertibility: False
+    enforce_stationarity: False
+    is_regression: True
+
+  gru:
+    type: gru
+    hidden_dim: 256
+    epochs: 50
+    is_regression: True
+
+#  arima:
+#    type: arima
+#    order: 5, 1, 0  # 5, 1, 0  -  7, 7  -  7, 0, 7
+#    is_regression: True
 
