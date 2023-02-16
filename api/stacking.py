@@ -7,10 +7,8 @@ import sys
 
 import hydra
 from omegaconf import DictConfig
-from models import MODELS
 from data_loader import get_dataset
-from factory.trainer import Trainer
-from factory.evaluator import Evaluator
+
 from factory.stacker import Stacker
 import pandas as pd
 import numpy as np
@@ -28,11 +26,6 @@ from math import sqrt
 
 import tensorflow as tf
 import numpy as np
-from keras.models import Sequential
-from keras import Model
-from keras.layers import Flatten
-from keras.layers import Dense, dot, Input
-from keras.layers import Activation
 import matplotlib.pyplot as plt
 
 from metrics import METRICS
@@ -82,60 +75,34 @@ def stacking(cfg: DictConfig):
         (dataset['Date'] > cfg.dataset.valid_start_date) & (dataset['Date'] < cfg.dataset.valid_end_date)]
 
     stacker = Stacker(cfg)
-    stacker.add_new_col(np.array(train_dataset.prediction), 'prediction', is_train=True)
-    stacker.add_new_col(np.array(valid_dataset.prediction), 'prediction', is_train=False)
+    stacker.add_new_col(np.array(train_dataset.prediction), 'prediction', situation=0)
+    stacker.add_new_col(np.array(valid_dataset.prediction), 'prediction', situation=1)
 
     for key in cfg.models.keys():
-        item = cfg.models[key]
-        model = MODELS[item['type']](item)
-        arg = cfg.copy()
-        arg['model'] = item
-        trainer = Trainer(arg, train_dataset, None, model)
-        trainer.train()
-        prediction_ = trainer.prediction()
-        stacker.add_new_col(np.array(prediction_), item['type'], is_train=True)
-        evaluator = Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter)
-        prediction_ = evaluator.prediction()
-        stacker.add_new_col(np.array(prediction_), item['type'], is_train=False)
+        stacker.model_handler(key, train_dataset, valid_dataset, reporter)
 
     train_ = pd.DataFrame(stacker.train_dataset)
     valid_ = pd.DataFrame(stacker.valid_dataset)
 
-    X_train = np.array(train_.iloc[:, 1:])
-    y_train = np.array(train_.iloc[:, 0])
-    X_train = tf.convert_to_tensor(X_train, np.float32)
-    y_train = tf.convert_to_tensor(y_train, np.float32)
+    X_train = tf.convert_to_tensor(np.array(train_.iloc[:, 1:]), np.float32)
+    y_train = tf.convert_to_tensor(np.array(train_.iloc[:, 0]), np.float32)
 
-    X_valid = np.array(valid_.iloc[:, 1:])
     y_valid = np.array(valid_.iloc[:, 0])
-    X_valid = tf.convert_to_tensor(X_valid, np.float32)
+    X_valid = tf.convert_to_tensor(np.array(valid_.iloc[:, 1:]), np.float32)
     # print(X_train.shape)
 
-    model_in = Input(shape=(X_train.shape[1],))
-    dense_0 = Dense(30, activation='relu')(model_in)
-    dense_1 = Dense(30, activation='relu')(dense_0)
-    dense_2 = Dense(X_train.shape[1], activation='softmax')(dense_1)
-    model_out = dot([dense_2, model_in], axes=1, normalize=False)
-    model = Model(inputs=model_in, outputs=model_out)
+    stacker.create_model(X_train.shape[1])
+    stacker.fit(X_train, y_train)
 
-    model.compile(optimizer='adam',
-                  loss='MeanSquaredError',
-                  metrics=['accuracy'])
+    prediction_ = stacker.model.predict(X_valid)
 
-    model.build(X_train.shape)
-
-    model.fit(X_train, y_train, epochs=300,
-              batch_size=32,
-              validation_split=0)
-
-    prediction_ = model.predict(X_valid)
-    # print(prediction_)
-    # print(y_valid)
-
+    dic_ = {}
     for metric_name in cfg.metrics:
         metric_func = METRICS[metric_name]
         metric_value = metric_func(prediction_, y_valid, True)
-        print(metric_name, metric_value)
+        dic_[metric_name] = metric_value
+    stacker.metric_results['stacking'] = dic_
+    print(stacker.metric_results)
 
 
 if __name__ == '__main__':
