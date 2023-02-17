@@ -25,7 +25,8 @@ CryptoPredictions
 |   ├── GRU.py
 |   ├── ...
 ├── data_loader
-|   ├── BTCDataset.py        
+|   ├── CoinMarketDataset.py        
+|   ├── Bitmex.py        
 |   ├── ...
 ```
 
@@ -65,3 +66,24 @@ If you have any issues and errors install hydra like below:
 ```bash
 pip install hydra-core --upgrade
 ```
+
+# Dataset
+
+You can use more than 15 cryptocurrencies data by giving the symbol of the selected cryptocurrency to the config files. Moreover, the csv files of these cryptocurrencies could be found in ./data .
+
+<div align="center">
+
+|  Name	     | Symbol |  Name	      | Symbol |  Name	 | Symbol |
+| :---:      |  :---: |  :---:      | :---:  | :---:   | :---:  |
+| Bitcoin    | XBTUSD | Ethereum    | ETHUSD | BNB     | BNBUSD |
+| Cardano    | ADAUSD | Dogecoin    | DOGEUSD| Solana  | SOLUSD |
+| Polkadot   | DOTUSD | Litecoin    | LTCUSD | TRON    | TRXUSD |
+|Avalanche   | AVAXUSD|Chainlink    | LINKUSD| Aptos   | APTUSD |
+|Bitcoin Cash| BCHUSD |NEAR Protocol| NEARUSD| ApeCoin | APEUSD |
+|Cronos      | CROUSD |Axie Infinity| AXSUSD | EOS     | EOSUSD |
+
+</div>
+
+
+
+
