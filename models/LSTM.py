@@ -44,7 +44,7 @@ class MyLSTM:
         train_x = np.array(train_x, dtype=float)
         train_y = np.array(train_y, dtype=float)
         train_x = np.reshape(train_x, (train_x.shape[0], 1, train_x.shape[1]))
-        self.model.fit(train_x, train_y, epochs=self.epochs, verbose=0, shuffle=False, batch_size=50)
+        self.model.fit(train_x, train_y, epochs=self.epochs, verbose=1, shuffle=False, batch_size=50)
 
     def predict(self, test_x):
         test_x = np.array(test_x.iloc[:, 1:], dtype=float)

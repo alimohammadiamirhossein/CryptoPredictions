@@ -1,6 +1,13 @@
-window_size: 10
+window_size: 5
 train_start_date: 2016-11-24 09:30:00
 train_end_date: 2021-11-24 10:30:00
 valid_start_date: 2021-11-24 10:30:00
 valid_end_date: 2022-11-24 10:30:00
-features: Date, open, High, Low, close, trades, volume #make sure to have Date High Low
+features: Date, open, High, Low, close, volume #make sure to have Date High Low
+indicators_names: rsi, macd
+
+
+#short_wma, wma, long_wma, ewma, tema, macd, stoch1, stoch2, wpr, rsi_experts, rsi, srsi, bolinger_up,
+#bolinger_down, kc_up, kc_down, tenkansen, kinjunsen, chikou, senkou_a, senkou_b, atr, momentum_,
+#roc, vix, chop, cog
+
