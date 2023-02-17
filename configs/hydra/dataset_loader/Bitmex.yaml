@@ -2,7 +2,7 @@ defaults:
   - _self_
   - common
 
-name: 'BTC_bitmex'
+name: 'Bitmex'
 binsize: 1h
 batch_size: 750
-type: "XBTUSD"
+symbol: "XBTUSD"

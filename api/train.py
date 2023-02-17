@@ -47,15 +47,14 @@ def train(cfg: DictConfig):
         try:
             df['Mean'] = (df['Low'] + df['High']) / 2
         except:
-            logger.error('your dataset should have High and Low columns')
+            logger.error('your dataset_loader should have High and Low columns')
         df = df.drop('Date', axis=1)
         df = df.dropna()
         arr = np.array(df)
-        dataset = create_dataset(arr, list(dates), look_back=cfg.dataset.window_size, features=features)
-
+        dataset = create_dataset(arr, list(dates), look_back=cfg.dataset_loader.window_size, features=features)
 
     elif cfg.model is not None:
-        dataset = get_dataset(cfg.dataset.name, cfg.dataset.train_start_date, cfg.dataset.valid_end_date, cfg)
+        dataset = get_dataset(cfg.dataset_loader.name, cfg.dataset_loader.train_start_date, cfg.dataset_loader.valid_end_date, cfg)
 
     cfg.save_dir = os.getcwd()
     reporter = Reporter(cfg)
@@ -64,9 +63,9 @@ def train(cfg: DictConfig):
 
     if cfg.validation_method == 'simple':
         train_dataset = dataset[
-            (dataset['Date'] > cfg.dataset.train_start_date) & (dataset['Date'] < cfg.dataset.train_end_date)]
+            (dataset['Date'] > cfg.dataset_loader.train_start_date) & (dataset['Date'] < cfg.dataset_loader.train_end_date)]
         valid_dataset = dataset[
-            (dataset['Date'] > cfg.dataset.valid_start_date) & (dataset['Date'] < cfg.dataset.valid_end_date)]
+            (dataset['Date'] > cfg.dataset_loader.valid_start_date) & (dataset['Date'] < cfg.dataset_loader.valid_end_date)]
         
         Trainer(cfg, train_dataset, None, model).train()
         Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
@@ -74,7 +73,6 @@ def train(cfg: DictConfig):
         reporter.save_metrics()
 
     elif cfg.validation_method == 'cross_validation':
-        n_split = dataset.shape[0]//365
         n_split = 5
         tscv = TimeSeriesSplit(n_splits=n_split)
 
@@ -87,10 +85,9 @@ def train(cfg: DictConfig):
         reporter.print_pretty_metrics(logger)
         reporter.save_metrics()
 
-
-
         # Trainer(cfg, train_dataset, None, model).train()
         # Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
+
 
 if __name__ == '__main__':
     train()

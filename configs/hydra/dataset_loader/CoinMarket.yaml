@@ -2,4 +2,4 @@ defaults:
   - _self_
   - common
 
-name: 'Bitcoin'
+name: 'CoinMarket'

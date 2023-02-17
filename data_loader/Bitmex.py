@@ -20,8 +20,6 @@ logger = logging.getLogger(__name__)
 class BitmexDataset:
     binsizes = {"1m": 1, "5m": 5, "1h": 60, "1d": 1440}
 
-
-
     def __init__(self, args):
         ### API
         bitmex_api_key = ''  # Enter your own API-key here
@@ -29,7 +27,7 @@ class BitmexDataset:
         # binance_api_key = '[REDACTED]'    #Enter your own API-key here
         # binance_api_secret = '[REDACTED]' #Enter your own API-secret here
         self.batch_size = args.batch_size
-        self.type = args.type
+        self.symbol = args.symbol
         self.bin = args.binsize
         self.bitmex_client = bitmex(test=False, api_key=bitmex_api_key, api_secret=bitmex_api_secret)
         self.window_size = args.window_size
@@ -84,7 +82,7 @@ class BitmexDataset:
         return data
 
     def get_dataset(self):
-        dataset = self.get_all_bitmex(self.type, self.bin, save=True)
+        dataset = self.get_all_bitmex(self.symbol, self.bin, save=True)
         return dataset
 
 

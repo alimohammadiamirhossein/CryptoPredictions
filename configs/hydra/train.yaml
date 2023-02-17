@@ -1,7 +1,7 @@
 defaults:
   - _self_
   - model: lstm #orbit - random_forest - sarimax - lstm - gru - prophet
-  - dataset: Bitcoin
+  - dataset_loader: CoinMarket
   - metrics
 
 validation_method: cross_validation #simple - cross_validation

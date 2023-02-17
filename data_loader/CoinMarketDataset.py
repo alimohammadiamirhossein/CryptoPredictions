@@ -8,7 +8,7 @@ from .creator import create_dataset
 logger = logging.getLogger(__name__)
 
 
-class BTCDataset:
+class CoinMarketDataset:
     dataset = []
 
     def __init__(self, main_features, start_date=None, end_date=None, window_size=10):
