@@ -18,7 +18,7 @@ from sklearn.model_selection import TimeSeriesSplit
 from path_definition import HYDRA_PATH
 # from schedulers import SCHEDULERS
 from utils.reporter import Reporter
-from data_loader.creator import create_dataset
+from data_loader.creator import create_dataset, preprocess
 # from utils.save_load import load_snapshot, save_snapshot, setup_training_dir
 
 logger = logging.getLogger(__name__)
@@ -32,26 +32,8 @@ def train(cfg: DictConfig):
         raise Exception(msg)
 
     elif cfg.load_path is not None:
-        dataset = pd.read_csv(cfg.load_path)
-        dataset = dataset[
-            (dataset['Date'] > cfg.dataset.train_start_date) & (dataset['Date'] < cfg.dataset.valid_end_date)]
-        if cfg.dataset.features is not None:
-            features = cfg.dataset.features.split(',')
-            features = [s.strip() for s in features]
-        else:
-            features = dataset.columns
-            features.remove('Date')
-
-        dates = dataset['Date']
-        df = dataset[features]
-        try:
-            df['Mean'] = (df['Low'] + df['High']) / 2
-        except:
-            logger.error('your dataset_loader should have High and Low columns')
-        df = df.drop('Date', axis=1)
-        df = df.dropna()
-        arr = np.array(df)
-        dataset = create_dataset(arr, list(dates), look_back=cfg.dataset_loader.window_size, features=features)
+        dataset_ = pd.read_csv(cfg.load_path)
+        dataset = preprocess(dataset_, cfg, logger)
 
     elif cfg.model is not None:
         dataset = get_dataset(cfg.dataset_loader.name, cfg.dataset_loader.train_start_date, cfg.dataset_loader.valid_end_date, cfg)

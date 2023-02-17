@@ -3,6 +3,30 @@ import pandas as pd
 from datetime import datetime
 
 
+def preprocess(dataset, cfg, logger=None):
+    dataset = dataset[
+        (dataset['Date'] > cfg.dataset.train_start_date) & (dataset['Date'] < cfg.dataset.valid_end_date)]
+    if cfg.dataset.features is not None:
+        features = cfg.dataset.features.split(',')
+        features = [s.strip() for s in features]
+    else:
+        features = dataset.columns
+        features.remove('Date')
+
+    dates = dataset['Date']
+    df = dataset[features]
+    try:
+        df['Mean'] = (df['Low'] + df['High']) / 2
+    except:
+        if logger is not None:
+            logger.error('your dataset_loader should have High and Low columns')
+    df = df.drop('Date', axis=1)
+    df = df.dropna()
+    arr = np.array(df)
+    dataset = create_dataset(arr, list(dates), look_back=cfg.dataset_loader.window_size, features=features)
+    return dataset
+
+
 def create_dataset(dataset, dates, look_back, features):
     data_x = []
     for i in range(len(dataset) - look_back - 1):

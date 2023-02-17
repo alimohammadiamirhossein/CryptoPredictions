@@ -10,7 +10,7 @@ from bitmex import bitmex
 from datetime import timedelta, datetime
 from dateutil import parser
 from tqdm import tqdm_notebook #(Optional, used for progress-bars)
-from .creator import create_dataset
+from .creator import create_dataset, preprocess
 import numpy as np
 
 
@@ -26,6 +26,7 @@ class BitmexDataset:
         bitmex_api_secret = ''  # Enter your own API-secret here
         # binance_api_key = '[REDACTED]'    #Enter your own API-key here
         # binance_api_secret = '[REDACTED]' #Enter your own API-secret here
+        self.args = args
         self.batch_size = args.batch_size
         self.symbol = args.symbol
         self.bin = args.binsize
@@ -66,12 +67,12 @@ class BitmexDataset:
             for round_num in tqdm_notebook(range(rounds)):
                 time.sleep(3)
                 new_time = (oldest_point + timedelta(minutes=round_num * self.batch_size * self.binsizes[kline_size]))
-                data = self.bitmex_client.Trade.Trade_getBucketed(symbol=symbol, binSize=kline_size, count=batch_size,
+                data = self.bitmex_client.Trade.Trade_getBucketed(symbol=symbol, binSize=kline_size, count=self.batch_size,
                                                              startTime=new_time).result()[0]
                 temp_df = pd.DataFrame(data)
                 data_df = data_df.append(temp_df)
         data_df.set_index('Date', inplace=True)
-        data = self.create_dataset(data_df, self.window_size)
+        data = preprocess(data_df, self.args)
         return data
 
     def create_dataset(self, df, window_size):
