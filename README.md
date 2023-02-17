@@ -84,6 +84,29 @@ You can use more than 15 cryptocurrencies data by giving the symbol of the selec
 
 </div>
 
+# Indicators
+
+In order to have a richer dataset, library provides you with more than 30 indicators. You could select the indicators you want to have in your dataset and the library will calculate them and add them to the dataset.
+
+The list of of available indicators supported by the library is as follow:
+
+<div align="center">
+
+|  Name	                                | Symbol          |  Name	                            | Symbol          |  Name	                            | Symbol   |
+| :---:                                 |  :---:          |  :---:                            | :---:           | :---:                             | :---:    |
+| Simple Moving Average                 | sma             |  Weighted Moving Average          | wma             | Cumulative Moving Average         | cma      |
+| Exponential Moving Average            | ema             |  Double Exponential Moving Average| dema            | Triple Exponential Moving Average | trix     |
+| Moving Average Convergence Divergence | macd            |  Stochastic                       | stoch           | KDJ                               | kdj      |
+| William %R                            | wpr             |  Relative Strengh Index           | rsi             | Stochastic Relative Strengh Index | srsi     |
+|  Chande Momentum Oscillator           | cmo             |  Bollinger Bands                  | bollinger       | Keltner Channel                   | kc       |
+| Donchian Channel                      | dc              |  Heiken Ashi                      | heiken          | Ichimoku                          | ichi     |
+| Volume Profile                        | vp              |  True Range                       | tr              | Average True Range                | atr      |
+| Average Directionnal Index            | adx             |  On Balance Volume                | obv             | Momentum                          | mmt      |
+| Rate Of Change                        | roc             |  Aroon                            | aroon           | Chaikin Money Flow                | cmf      |
+| Volatility Index                      | vix             | Chopiness Index                   | chop            | Center Of Gravity                 | cog      |
+
+
+</div>
 
 
 
