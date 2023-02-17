@@ -5,9 +5,9 @@ from datetime import datetime
 
 def preprocess(dataset, cfg, logger=None):
     dataset = dataset[
-        (dataset['Date'] > cfg.dataset.train_start_date) & (dataset['Date'] < cfg.dataset.valid_end_date)]
-    if cfg.dataset.features is not None:
-        features = cfg.dataset.features.split(',')
+        (dataset['Date'] > cfg.dataset_loader.train_start_date) & (dataset['Date'] < cfg.dataset_loader.valid_end_date)]
+    if cfg.dataset_loader.features is not None:
+        features = cfg.dataset_loader.features.split(',')
         features = [s.strip() for s in features]
     else:
         features = dataset.columns
@@ -15,11 +15,19 @@ def preprocess(dataset, cfg, logger=None):
 
     dates = dataset['Date']
     df = dataset[features]
+
+    if 'low' in df.columns:
+        df = df.rename({'low': 'Low'}, axis=1)
+
+    if 'high' in df.columns:
+        df = df.rename({'high': 'High'}, axis=1)
+
     try:
         df['Mean'] = (df['Low'] + df['High']) / 2
     except:
         if logger is not None:
             logger.error('your dataset_loader should have High and Low columns')
+
     df = df.drop('Date', axis=1)
     df = df.dropna()
     arr = np.array(df)

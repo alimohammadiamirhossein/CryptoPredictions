@@ -30,7 +30,7 @@ def get_dataset(dataset_name, start_date, end_date, args):
         dataset = btc.get_dataset()
 
     elif dataset_name == 'Bitmex':
-        btc = BitmexDataset(args.dataset_loader)
+        btc = BitmexDataset(args)
         dataset = btc.get_dataset()
 
     return dataset

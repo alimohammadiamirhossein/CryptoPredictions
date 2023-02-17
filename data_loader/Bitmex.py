@@ -20,13 +20,15 @@ logger = logging.getLogger(__name__)
 class BitmexDataset:
     binsizes = {"1m": 1, "5m": 5, "1h": 60, "1d": 1440}
 
-    def __init__(self, args):
+    def __init__(self, cfg):
         ### API
         bitmex_api_key = ''  # Enter your own API-key here
         bitmex_api_secret = ''  # Enter your own API-secret here
         # binance_api_key = '[REDACTED]'    #Enter your own API-key here
         # binance_api_secret = '[REDACTED]' #Enter your own API-secret here
-        self.args = args
+        self.cfg = cfg
+        self.args = cfg.dataset_loader
+        args = cfg.dataset_loader
         self.batch_size = args.batch_size
         self.symbol = args.symbol
         self.bin = args.binsize
@@ -71,8 +73,9 @@ class BitmexDataset:
                                                              startTime=new_time).result()[0]
                 temp_df = pd.DataFrame(data)
                 data_df = data_df.append(temp_df)
-        data_df.set_index('Date', inplace=True)
-        data = preprocess(data_df, self.args)
+        # data_df.set_index('Date', inplace=True)
+        data_df = data_df.rename({'timestamp':'Date'}, axis=1)
+        data = preprocess(data_df, self.cfg)
         return data
 
     def create_dataset(self, df, window_size):
