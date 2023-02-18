@@ -1,0 +1,30 @@
+defaults:
+  - _self_
+  - common
+
+name: 'Bitmex'
+binsize: 1d
+batch_size: 750
+symbol: "XBTUSD"
+
+
+
+#Bitcoin: XBTUSD
+#Ethereum: ETHUSD
+#BNB: BNBUSD
+#Cardano: ADAUSD
+#Dogecoin: DOGEUSD
+#Solana: SOLUSD
+#Polkadot: DOTUSD
+#Litecoin: LTCUSD
+#TRON: TRXUSD
+#Avalanche: AVAXUSD
+#Chainlink: LINKUSD
+#Aptos: APTUSD
+#Bitcoin Cash: BCHUSD
+#NEAR Protocol: NEARUSD
+#ApeCoin: APEUSD
+#Cronos: CROUSD
+#Axie Infinity: AXSUSD
+#EOS: EOSUSD
+

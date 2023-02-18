@@ -18,7 +18,7 @@ from sklearn.model_selection import TimeSeriesSplit
 from path_definition import HYDRA_PATH
 # from schedulers import SCHEDULERS
 from utils.reporter import Reporter
-from data_loader.creator import create_dataset
+from data_loader.creator import create_dataset, preprocess
 # from utils.save_load import load_snapshot, save_snapshot, setup_training_dir
 
 logger = logging.getLogger(__name__)
@@ -32,30 +32,11 @@ def train(cfg: DictConfig):
         raise Exception(msg)
 
     elif cfg.load_path is not None:
-        dataset = pd.read_csv(cfg.load_path)
-        dataset = dataset[
-            (dataset['Date'] > cfg.dataset.train_start_date) & (dataset['Date'] < cfg.dataset.valid_end_date)]
-        if cfg.dataset.features is not None:
-            features = cfg.dataset.features.split(',')
-            features = [s.strip() for s in features]
-        else:
-            features = dataset.columns
-            features.remove('Date')
-
-        dates = dataset['Date']
-        df = dataset[features]
-        try:
-            df['Mean'] = (df['Low'] + df['High']) / 2
-        except:
-            logger.error('your dataset should have High and Low columns')
-        df = df.drop('Date', axis=1)
-        df = df.dropna()
-        arr = np.array(df)
-        dataset = create_dataset(arr, list(dates), look_back=cfg.dataset.window_size, features=features)
-
+        dataset_ = pd.read_csv(cfg.load_path)
+        dataset = preprocess(dataset_, cfg, logger)
 
     elif cfg.model is not None:
-        dataset = get_dataset(cfg.dataset.name, cfg.dataset.train_start_date, cfg.dataset.valid_end_date, cfg)
+        dataset = get_dataset(cfg.dataset_loader.name, cfg.dataset_loader.train_start_date, cfg.dataset_loader.valid_end_date, cfg)
 
     cfg.save_dir = os.getcwd()
     reporter = Reporter(cfg)
@@ -64,9 +45,9 @@ def train(cfg: DictConfig):
 
     if cfg.validation_method == 'simple':
         train_dataset = dataset[
-            (dataset['Date'] > cfg.dataset.train_start_date) & (dataset['Date'] < cfg.dataset.train_end_date)]
+            (dataset['Date'] > cfg.dataset_loader.train_start_date) & (dataset['Date'] < cfg.dataset_loader.train_end_date)]
         valid_dataset = dataset[
-            (dataset['Date'] > cfg.dataset.valid_start_date) & (dataset['Date'] < cfg.dataset.valid_end_date)]
+            (dataset['Date'] > cfg.dataset_loader.valid_start_date) & (dataset['Date'] < cfg.dataset_loader.valid_end_date)]
         
         Trainer(cfg, train_dataset, None, model).train()
         Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
@@ -74,7 +55,6 @@ def train(cfg: DictConfig):
         reporter.save_metrics()
 
     elif cfg.validation_method == 'cross_validation':
-        n_split = dataset.shape[0]//365
         n_split = 5
         tscv = TimeSeriesSplit(n_splits=n_split)
 
@@ -87,10 +67,9 @@ def train(cfg: DictConfig):
         reporter.print_pretty_metrics(logger)
         reporter.save_metrics()
 
-
-
         # Trainer(cfg, train_dataset, None, model).train()
         # Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
+
 
 if __name__ == '__main__':
     train()

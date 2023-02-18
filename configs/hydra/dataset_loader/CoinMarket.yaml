@@ -1,0 +1,5 @@
+defaults:
+  - _self_
+  - common
+
+name: 'CoinMarket'
