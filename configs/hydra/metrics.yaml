@@ -3,4 +3,9 @@ metrics: #[]
   - f1_score
   - recall_score
   -  precision_score
-  - rmse
+  - MAE
+  - RMSE
+  - MAPE
+  - SMAPE
+  - MASE
+

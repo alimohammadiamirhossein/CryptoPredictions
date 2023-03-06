@@ -65,3 +65,28 @@ def rmse(pred, target, is_regression=False):
     # print('\n RMSE:', "{:.2f}".format(rmse))
     return rmse
 
+
+def mae(pred, target, is_regression=False):
+    mae = np.absolute(pred-target).mean()
+    # print('\n MAE:', "{:.2f}".format(mae))
+    return mae
+
+
+def mape(pred, target, is_regression=False):
+    mape = np.mean(np.abs((pred - target)/target)) * 100
+    return mape
+
+
+def smape(pred, target, is_regression=False):
+    smape = np.mean(2 * np.abs(pred - target) / (np.abs(target) + np.abs(pred))) * 100
+    return smape
+
+
+def mase(pred, target, sp=365, is_regression=False):
+    y_pred_naive = target[:-sp]
+    mae_naive = np.mean(np.abs(target[sp:] - y_pred_naive))
+
+    if mae_naive == 0:
+        return np.nan
+    else:
+        return np.mean(np.abs(target - pred)) / mae_naive

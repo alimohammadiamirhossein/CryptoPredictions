@@ -1,4 +1,6 @@
-from .metrics import accuracy_score, f1_score ,recall_score, precision_score, classification_report, confusion_matrix, rmse
+from .metrics import accuracy_score, f1_score ,recall_score, \
+    precision_score, classification_report, confusion_matrix, rmse, \
+    mae, mape, smape, mase
 
 
 METRICS = {     'accuracy_score': accuracy_score,
@@ -7,5 +9,9 @@ METRICS = {     'accuracy_score': accuracy_score,
                 'precision_score': precision_score,
                 'classification_report': classification_report,
                 'confusion_matrix': confusion_matrix,
-                'rmse': rmse
+                'RMSE': rmse,
+                'MAE': mae,
+                'MAPE': mape,
+                'SMAPE': smape,
+                'MASE': mase
                 }

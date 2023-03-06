@@ -1,10 +1,10 @@
 defaults:
   - _self_
-  - model: lstm #orbit - random_forest - sarimax - lstm - gru - prophet
-  - dataset_loader: Bitmex
+  - model: random_forest #orbit - random_forest - sarimax - lstm - gru - prophet
+  - dataset_loader: CoinMarket #Bitmex
   - metrics
 
-validation_method: cross_validation #simple - cross_validation
+validation_method: simple #simple - cross_validation
 load_path: #C:/Users/samen/Desktop/term9/forecasting/code/Data/hourly/XBTUSD-1h-data.csv
 save_dir:
 dataset_path:
