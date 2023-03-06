@@ -25,7 +25,8 @@ CryptoPredictions
 |   ├── GRU.py
 |   ├── ...
 ├── data_loader
-|   ├── BTCDataset.py        
+|   ├── CoinMarketDataset.py        
+|   ├── Bitmex.py        
 |   ├── ...
 ```
 
@@ -65,3 +66,48 @@ If you have any issues and errors install hydra like below:
 ```bash
 pip install hydra-core --upgrade
 ```
+for more information about Hydra and config files please visit [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/ARGS_README.md#Hydra).
+
+# Dataset
+
+You can use more than 15 cryptocurrencies data by giving the symbol of the selected cryptocurrency to the config files. Moreover, the csv files of these cryptocurrencies could be found in ./data .
+
+<div align="center">
+
+|  Name	     | Symbol |  Name	      | Symbol |  Name	 | Symbol |
+| :---:      |  :---: |  :---:      | :---:  | :---:   | :---:  |
+| Bitcoin    | XBTUSD | Ethereum    | ETHUSD | BNB     | BNBUSD |
+| Cardano    | ADAUSD | Dogecoin    | DOGEUSD| Solana  | SOLUSD |
+| Polkadot   | DOTUSD | Litecoin    | LTCUSD | TRON    | TRXUSD |
+|Avalanche   | AVAXUSD|Chainlink    | LINKUSD| Aptos   | APTUSD |
+|Bitcoin Cash| BCHUSD |NEAR Protocol| NEARUSD| ApeCoin | APEUSD |
+|Cronos      | CROUSD |Axie Infinity| AXSUSD | EOS     | EOSUSD |
+
+</div>
+
+# Indicators
+
+In order to have a richer dataset, library provides you with more than 30 indicators. You could select the indicators you want to have in your dataset and the library will calculate them and add them to the dataset.
+
+The list of of available indicators supported by the library is as follow:
+
+<div align="center">
+
+|  Name	                                | Symbol          |  Name	                            | Symbol          |  Name	                            | Symbol   |
+| :---:                                 |  :---:          |  :---:                            | :---:           | :---:                             | :---:    |
+| Simple Moving Average                 | sma             |  Weighted Moving Average          | wma             | Cumulative Moving Average         | cma      |
+| Exponential Moving Average            | ema             |  Double Exponential Moving Average| dema            | Triple Exponential Moving Average | trix     |
+| Moving Average Convergence Divergence | macd            |  Stochastic                       | stoch           | KDJ                               | kdj      |
+| William %R                            | wpr             |  Relative Strengh Index           | rsi             | Stochastic Relative Strengh Index | srsi     |
+|  Chande Momentum Oscillator           | cmo             |  Bollinger Bands                  | bollinger       | Keltner Channel                   | kc       |
+| Donchian Channel                      | dc              |  Heiken Ashi                      | heiken          | Ichimoku                          | ichi     |
+| Volume Profile                        | vp              |  True Range                       | tr              | Average True Range                | atr      |
+| Average Directionnal Index            | adx             |  On Balance Volume                | obv             | Momentum                          | mmt      |
+| Rate Of Change                        | roc             |  Aroon                            | aroon           | Chaikin Money Flow                | cmf      |
+| Volatility Index                      | vix             | Chopiness Index                   | chop            | Center Of Gravity                 | cog      |
+
+
+</div>
+
+
+
