@@ -4,7 +4,7 @@ from .orbit import Orbit
 from .LSTM import MyLSTM
 from .GRU import MyGRU
 from .arima import MyARIMA
-# from .prophet import MyProphet
+from .prophet import MyProphet
 from .xgboost import MyXGboost
 
 
@@ -14,6 +14,6 @@ MODELS = {'random_forest': RandomForest,
           'lstm': MyLSTM,
           'gru': MyGRU,
           'arima': MyARIMA,
-          # 'prophet': MyProphet,
+          'prophet': MyProphet,
           'xgboost': MyXGboost
           }

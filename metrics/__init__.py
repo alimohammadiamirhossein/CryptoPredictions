@@ -1,6 +1,6 @@
 from .metrics import accuracy_score, f1_score ,recall_score, \
     precision_score, classification_report, confusion_matrix, rmse, \
-    mae, mape, smape, mase
+    mae, mape, smape, mase, msle
 
 
 METRICS = {     'accuracy_score': accuracy_score,

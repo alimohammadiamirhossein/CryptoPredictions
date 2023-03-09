@@ -7,6 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from .average_meter import AverageMeter
 
+
 class Reporter:
     def __init__(self, args):
         self.metrics = None
@@ -59,7 +60,8 @@ class Reporter:
         str_ = '|'.join([''.ljust(15)] + [a.center(15) for a in self.metrics.keys()])
         result += (str_ + '\n')
         for index, row in self.df_of_cross_validation.iterrows():
-            str_ = '|'.join([index.ljust(15)] + ["{:.2f}".format(a).center(15) for a in list(row)])
+            str_ = '|'.join([index.ljust(15)] + ["{:.2f}".format(a).center(15) if a > 1
+                                                     else "{:.3f}".format(a).center(15) for a in list(row)])
             result += (str_ + '\n')
         logger.info(result)
 
@@ -71,7 +73,8 @@ class Reporter:
             str_ = '|'.join([''.ljust(15)] + [a.center(15) for a in self.metrics.keys()])
             result += (str_ + '\n')
             for index, row in self.df_of_cross_validation.iterrows():
-                str_ = '|'.join([index.ljust(15)] + ["{:.2f}".format(a).center(15) for a in list(row)])
+                str_ = '|'.join([index.ljust(15)] + ["{:.2f}".format(a).center(15) if a > 1
+                                                     else "{:.3f}".format(a).center(15) for a in list(row)])
                 result += (str_ + '\n')
             text_file.write(result)
 
@@ -93,6 +96,3 @@ class Reporter:
         self.plot_counter += 1
         plt.close()
         # plt.show()
-            
-    
-

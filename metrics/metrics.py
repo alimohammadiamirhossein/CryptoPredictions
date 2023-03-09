@@ -94,5 +94,5 @@ def mase(pred, target, sp=365, is_regression=False):
 
 def msle(pred, target, squared=True,is_regression=False):
     if squared:
-        return np.mean(np.power(np.log(pred + 1) - np.log(target + 1), 2))
-    return np.sqrt(np.mean(np.power(np.log(pred + 1) - np.log(target + 1), 2)))
+        return np.mean(np.power(np.log(np.array(pred).astype(float) + 1) - np.log(np.array(target).astype(float) + 1), 2))
+    return np.sqrt(np.mean(np.power(np.log(np.array(pred).astype(float) + 1) - np.log(np.array(target).astype(float) + 1), 2)))
