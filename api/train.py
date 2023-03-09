@@ -33,6 +33,12 @@ def train(cfg: DictConfig):
 
     elif cfg.load_path is not None:
         dataset_ = pd.read_csv(cfg.load_path)
+        if 'Date' not in dataset_.keys():
+          dataset_.rename(columns={'timestamp': 'Date'}, inplace=True)
+        if 'High' not in dataset_.keys():
+          dataset_.rename(columns={'high': 'High'}, inplace=True)
+        if 'Low' not in dataset_.keys():
+          dataset_.rename(columns={'low': 'Low'}, inplace=True)
         dataset = preprocess(dataset_, cfg, logger)
 
     elif cfg.model is not None:
@@ -43,12 +49,12 @@ def train(cfg: DictConfig):
     reporter.setup_saving_dirs(cfg.save_dir)
     model = MODELS[cfg.model.type](cfg.model)
 
+
     if cfg.validation_method == 'simple':
         train_dataset = dataset[
             (dataset['Date'] > cfg.dataset_loader.train_start_date) & (dataset['Date'] < cfg.dataset_loader.train_end_date)]
         valid_dataset = dataset[
             (dataset['Date'] > cfg.dataset_loader.valid_start_date) & (dataset['Date'] < cfg.dataset_loader.valid_end_date)]
-        
         Trainer(cfg, train_dataset, None, model).train()
         Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
         reporter.print_pretty_metrics(logger)

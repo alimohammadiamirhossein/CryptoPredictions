@@ -5,7 +5,8 @@ defaults:
   - metrics
 
 validation_method: simple #simple - cross_validation
-load_path: #C:/Users/samen/Desktop/term9/forecasting/code/Data/hourly/XBTUSD-1h-data.csv
+symbol: ADA
+load_path: C:/Users/samen/Desktop/term9/forecasting/code/Data/hourly/ADAUSD-1h-data.csv
 save_dir:
 dataset_path:
 

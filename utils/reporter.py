@@ -13,6 +13,8 @@ class Reporter:
         self.metrics = None
         self.args = args
         self.parent_dir = args.save_dir
+        self.model = args.model.type
+        self.symbol = args.symbol
         self.plot_counter = 0
         self.df_of_cross_validation = None
         self.counter_cross_validation = -1
@@ -66,7 +68,7 @@ class Reporter:
         logger.info(result)
 
     def save_metrics(self):
-        address = os.path.join(self.parent_dir, 'metrics_history', f'metrics.csv')
+        address = os.path.join(self.parent_dir, 'metrics_history', f'{self.symbol}_{self.model}_metrics.csv')
         self.df_of_cross_validation.to_csv(address)
         with open(os.path.join(self.parent_dir, 'metrics_history', f'metrics.txt'), "w") as text_file:
             result = "\n"
@@ -81,16 +83,16 @@ class Reporter:
     def plot_continues_data(self, dates, testX, predicted_df):
         plt.figure(figsize=(25, 15), dpi=80, facecolor='w', edgecolor='k')
         ax = plt.gca()
-        plt.plot(dates, testX, color='red', label='Real BTC Price')
-        plt.plot(dates, predicted_df, color='blue', label='Predicted BTC Price')
-        plt.title('BTC Price Prediction', fontsize=40)
+        plt.plot(dates, testX, color='red', label=f'Real {self.symbol} Price')
+        plt.plot(dates, predicted_df, color='blue', label=f'Predicted {self.symbol} Price')
+        plt.title(f'{self.symbol} Price Prediction', fontsize=40)
         # x = .reset_index().index
         for tick in ax.xaxis.get_major_ticks():
             tick.label1.set_fontsize(18)
         for tick in ax.yaxis.get_major_ticks():
             tick.label1.set_fontsize(18)
         plt.xlabel('Time', fontsize=40)
-        plt.ylabel('BTC Price(USD) [Closed]', fontsize=40)
+        plt.ylabel(f'{self.symbol} Price(USD) [Closed]', fontsize=40)
         plt.legend(loc=2, prop={'size': 25})
         plt.savefig(os.path.join(self.parent_dir, 'plots', f'plot_{self.plot_counter}'))
         self.plot_counter += 1
