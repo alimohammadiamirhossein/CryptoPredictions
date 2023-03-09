@@ -90,3 +90,9 @@ def mase(pred, target, sp=365, is_regression=False):
         return np.nan
     else:
         return np.mean(np.abs(target - pred)) / mae_naive
+
+
+def msle(pred, target, squared=True,is_regression=False):
+    if squared:
+        return np.mean(np.power(np.log(pred + 1) - np.log(target + 1), 2))
+    return np.sqrt(np.mean(np.power(np.log(pred + 1) - np.log(target + 1), 2)))

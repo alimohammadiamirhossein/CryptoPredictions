@@ -13,5 +13,6 @@ METRICS = {     'accuracy_score': accuracy_score,
                 'MAE': mae,
                 'MAPE': mape,
                 'SMAPE': smape,
-                'MASE': mase
+                'MASE': mase,
+                'MSLE': msle
                 }
