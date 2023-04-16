@@ -44,9 +44,8 @@ def preprocess(dataset, cfg, logger=None):
     arr = np.concatenate((arr[100:], arr1), axis=1)
     features.remove('Date')
     features = features + indicators_names
-    dataset = create_dataset(arr, list(dates), look_back=cfg.dataset_loader.window_size, features=features)
-    print(dataset.shape)
-    return dataset
+    dataset, profit_calculator = create_dataset(arr, list(dates), look_back=cfg.dataset_loader.window_size, features=features)
+    return dataset, profit_calculator
 
 
 def create_dataset(dataset, dates, look_back, features):
@@ -85,11 +84,21 @@ def create_dataset(dataset, dates, look_back, features):
     last_col.remove(f'High_day{counter_date-1}')
     last_col.remove(f'Low_day{counter_date - 1}')
     last_col.remove(f'mean_day{counter_date - 1}')
+    profit_calculator = data_frame.copy()[['Date',f'Low_day{counter_date-1}', f'High_day{counter_date-1}',
+                                       f'close_day{counter_date-1}', f'open_day{counter_date-1}',
+                                       f'volume_day{counter_date-1}']]
     data_frame.drop(last_col, axis=1, inplace=True)
     data_frame = data_frame.rename({f'High_day{counter_date-1}': 'predicted_high',
                        f'Low_day{counter_date-1}': 'predicted_low',
                        f'mean_day{counter_date-1}': 'prediction'
                        }, axis=1)
 
-    return data_frame
+    profit_calculator = profit_calculator.rename({f'High_day{counter_date - 1}': 'High',
+                                    f'Low_day{counter_date - 1}': 'Low',
+                                    f'open_day{counter_date - 1}': 'Open',
+                                    f'close_day{counter_date - 1}': 'Close',
+                                    f'volume_day{counter_date - 1}': 'Volume',
+                                    }, axis=1)
+
+    return data_frame, profit_calculator
 

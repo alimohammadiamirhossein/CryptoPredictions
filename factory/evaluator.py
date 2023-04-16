@@ -38,5 +38,7 @@ class Evaluator:
         if self.is_regression:
             self.reporter.plot_continues_data(self.dates, self.test_dataset_Y, predicted_df)
 
+        return predicted_df
+
 
 

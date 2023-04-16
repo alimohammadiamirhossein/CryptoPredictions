@@ -83,8 +83,8 @@ class CoinMarketDataset:
         arr = arr[start_index:end_index]
         features = df.columns
 
-        self.dataset = create_dataset(arr, list(dates), look_back=window_size, features=features)
+        self.dataset, self.profit_calculator = create_dataset(arr, list(dates), look_back=window_size, features=features)
 
 
     def get_dataset(self):
-        return self.dataset
+        return self.dataset, self.profit_calculator

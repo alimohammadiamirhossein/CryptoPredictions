@@ -11,6 +11,7 @@ from models import MODELS
 from data_loader import get_dataset
 from factory.trainer import Trainer
 from factory.evaluator import Evaluator
+from factory.profit_calculator import ProfitCalculator
 import pandas as pd
 import numpy as np
 
@@ -41,10 +42,10 @@ def train(cfg: DictConfig):
         if 'Low' not in dataset_.keys():
             dataset_.rename(columns={'low': 'Low'}, inplace=True)
 
-        dataset = preprocess(dataset_, cfg, logger)
+        dataset, profit_calculator = preprocess(dataset_, cfg, logger)
 
     elif cfg.model is not None:
-        dataset = get_dataset(cfg.dataset_loader.name, cfg.dataset_loader.train_start_date,
+        dataset, profit_calculator = get_dataset(cfg.dataset_loader.name, cfg.dataset_loader.train_start_date,
                               cfg.dataset_loader.valid_end_date, cfg)
 
     cfg.save_dir = os.getcwd()
@@ -63,7 +64,7 @@ def train(cfg: DictConfig):
             (dataset['Date'] > cfg.dataset_loader.valid_start_date) & (
                         dataset['Date'] < cfg.dataset_loader.valid_end_date)]
         Trainer(cfg, train_dataset, None, model).train()
-        Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
+        mean_prediction = Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
 
     elif cfg.validation_method == 'cross_validation':
         n_split = 3
@@ -72,13 +73,11 @@ def train(cfg: DictConfig):
         for train_index, test_index in tscv.split(dataset):
             train_dataset, valid_dataset = dataset.iloc[train_index], dataset.iloc[test_index]
             Trainer(cfg, train_dataset, None, model).train()
-            Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
+            mean_prediction = Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
 
         reporter.add_average()
 
-
-    dataset_for_profit
-
+    ProfitCalculator(cfg, dataset_for_profit, profit_calculator, mean_prediction, reporter).profit_calculator()
 
     reporter.print_pretty_metrics(logger)
     reporter.save_metrics()
