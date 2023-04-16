@@ -15,7 +15,6 @@ class Trainer:
         self.valid_dataset = valid_dataset
         self.use_validation = False if valid_dataset is None else True
 
-
     def train(self):
         logger.info("Training started.")
         time0 = time.time()

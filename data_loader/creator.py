@@ -77,5 +77,19 @@ def create_dataset(dataset, dates, look_back, features):
     cols.append('prediction')
 
     data_frame = pd.DataFrame(data_x, columns=cols)
+    last_col = []
+    for i in range(len(features)):
+        name = features[i]
+        last_col.append(f'{name}_day{counter_date-1}')
+    last_col.append('prediction')
+    last_col.remove(f'High_day{counter_date-1}')
+    last_col.remove(f'Low_day{counter_date - 1}')
+    last_col.remove(f'mean_day{counter_date - 1}')
+    data_frame.drop(last_col, axis=1, inplace=True)
+    data_frame = data_frame.rename({f'High_day{counter_date-1}': 'predicted_high',
+                       f'Low_day{counter_date-1}': 'predicted_low',
+                       f'mean_day{counter_date-1}': 'prediction'
+                       }, axis=1)
+
     return data_frame
 

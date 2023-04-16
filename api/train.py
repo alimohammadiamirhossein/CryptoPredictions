@@ -19,6 +19,7 @@ from path_definition import HYDRA_PATH
 # from schedulers import SCHEDULERS
 from utils.reporter import Reporter
 from data_loader.creator import create_dataset, preprocess
+
 # from utils.save_load import load_snapshot, save_snapshot, setup_training_dir
 
 logger = logging.getLogger(__name__)
@@ -34,34 +35,38 @@ def train(cfg: DictConfig):
     elif cfg.load_path is not None:
         dataset_ = pd.read_csv(cfg.load_path)
         if 'Date' not in dataset_.keys():
-          dataset_.rename(columns={'timestamp': 'Date'}, inplace=True)
+            dataset_.rename(columns={'timestamp': 'Date'}, inplace=True)
         if 'High' not in dataset_.keys():
-          dataset_.rename(columns={'high': 'High'}, inplace=True)
+            dataset_.rename(columns={'high': 'High'}, inplace=True)
         if 'Low' not in dataset_.keys():
-          dataset_.rename(columns={'low': 'Low'}, inplace=True)
+            dataset_.rename(columns={'low': 'Low'}, inplace=True)
+
         dataset = preprocess(dataset_, cfg, logger)
 
     elif cfg.model is not None:
-        dataset = get_dataset(cfg.dataset_loader.name, cfg.dataset_loader.train_start_date, cfg.dataset_loader.valid_end_date, cfg)
+        dataset = get_dataset(cfg.dataset_loader.name, cfg.dataset_loader.train_start_date,
+                              cfg.dataset_loader.valid_end_date, cfg)
 
     cfg.save_dir = os.getcwd()
     reporter = Reporter(cfg)
     reporter.setup_saving_dirs(cfg.save_dir)
     model = MODELS[cfg.model.type](cfg.model)
 
-
+    dataset_for_profit = dataset.copy()
+    dataset_for_profit.drop(['prediction'], axis=1, inplace=True)
+    dataset.drop(['predicted_high', 'predicted_low'], axis=1, inplace=True)
     if cfg.validation_method == 'simple':
         train_dataset = dataset[
-            (dataset['Date'] > cfg.dataset_loader.train_start_date) & (dataset['Date'] < cfg.dataset_loader.train_end_date)]
+            (dataset['Date'] > cfg.dataset_loader.train_start_date) & (
+                        dataset['Date'] < cfg.dataset_loader.train_end_date)]
         valid_dataset = dataset[
-            (dataset['Date'] > cfg.dataset_loader.valid_start_date) & (dataset['Date'] < cfg.dataset_loader.valid_end_date)]
+            (dataset['Date'] > cfg.dataset_loader.valid_start_date) & (
+                        dataset['Date'] < cfg.dataset_loader.valid_end_date)]
         Trainer(cfg, train_dataset, None, model).train()
         Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
-        reporter.print_pretty_metrics(logger)
-        reporter.save_metrics()
 
     elif cfg.validation_method == 'cross_validation':
-        n_split = 5
+        n_split = 3
         tscv = TimeSeriesSplit(n_splits=n_split)
 
         for train_index, test_index in tscv.split(dataset):
@@ -70,8 +75,13 @@ def train(cfg: DictConfig):
             Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
 
         reporter.add_average()
-        reporter.print_pretty_metrics(logger)
-        reporter.save_metrics()
+
+
+    dataset_for_profit
+
+
+    reporter.print_pretty_metrics(logger)
+    reporter.save_metrics()
 
         # Trainer(cfg, train_dataset, None, model).train()
         # Evaluator(cfg, test_dataset=valid_dataset, model=model, reporter=reporter).evaluate()
