@@ -32,17 +32,11 @@ class ProfitCalculator:
         self.signal = None
 
     def profit_calculator(self):
-        # self.low_calculator()
-        # self.high_calculator()
+        self.low_calculator()
+        self.high_calculator()
         _, self.original = self.split_the_dataset(self.original)
-        # print(self.original)
-        # print(self.predicted_high.shape, self.predicted_low.shape)
-        # print(self.mean_prediction.shape)
-        arr = np.row_stack((self.mean_prediction, self.mean_prediction)).T
-        # arr = np.row_stack((self.predicted_low, self.predicted_high, self.mean_prediction)).T
-        # final = pd.DataFrame(arr, columns=['predicted_low', 'predicted_high', 'predicted_mean'])
-        final = pd.DataFrame(arr, columns=['predicted_mean', 'prediction_low'])
-        print(final)
+        arr = np.row_stack((self.predicted_low, self.predicted_high, self.mean_prediction)).T
+        final = pd.DataFrame(arr, columns=['predicted_low', 'predicted_high', 'predicted_mean'])
         self.original.reset_index(drop=True, inplace=True)
         final = pd.concat([self.original, final], axis=1)
         signal = np.array(Strategies(final).signal1()).T
@@ -79,7 +73,3 @@ class ProfitCalculator:
         Trainer(self.args, train_dataset, None, self.model).train()
         test_dataX = valid_dataset.drop(['prediction'], axis=1)
         self.predicted_high = self.model.predict(test_dataX)
-
-
-
-
