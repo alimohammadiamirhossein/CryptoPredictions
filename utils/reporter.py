@@ -1,8 +1,6 @@
-import sys
 import os
-import json
 
-import numpy as np
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from .average_meter import AverageMeter

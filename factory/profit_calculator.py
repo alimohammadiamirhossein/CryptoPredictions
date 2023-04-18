@@ -1,7 +1,5 @@
-from backtesting import Strategy
 import logging
-import time
-import gc
+import os
 
 import numpy as np
 import pandas as pd
@@ -20,23 +18,32 @@ class ProfitCalculator:
         self.dataset = dataset
         self.reporter = reporter
         self.mean_prediction = mean_prediction
-        # self.metrics = ['f1_score']
         self.is_regression = args.model.is_regression
+        self.save_dir = args.save_dir
         self.signal = None
 
     def profit_calculator(self):
         self.low_calculator()
         self.high_calculator()
         _, self.original = self.split_the_dataset(self.original)
+        final = self.create_dataframe()
+        address = self.setup_saving_dirs(self.save_dir)
+        final.to_csv(address, encoding='utf-8', index=False)
+
+    def create_dataframe(self):
         arr = np.row_stack((self.predicted_low, self.predicted_high, self.mean_prediction)).T
-        final = pd.DataFrame(arr, columns=['predicted_low', 'predicted_high', 'predicted_mean'])
+        predicteds = pd.DataFrame(arr, columns=['predicted_low', 'predicted_high', 'predicted_mean'])
         self.original.reset_index(drop=True, inplace=True)
-        final = pd.concat([self.original, final], axis=1)
-        signal = np.array(Strategies(final).signal1()).T
+        df = pd.concat([self.original, predicteds], axis=1)
+        signal = np.array(Strategies(df).signal1()).T
         signal = pd.DataFrame(signal, columns=['signal'])
         final = pd.concat([self.original, signal], axis=1)
-        final.to_csv('C:/Users/samen/Desktop/term9/CryptoPredictions/profit_calculation.csv',
-                     encoding='utf-8', index=False)
+        return final
+
+    def setup_saving_dirs(self, parent_dir):
+        os.makedirs(os.path.join(parent_dir, 'backTest_dataset'), exist_ok=False)
+        address = os.path.join(self.parent_dir, '', f'{self.symbol}_{self.model}_backTest.csv')
+        return address
 
     def split_the_dataset(self, dataset):
         train_dataset = dataset[
