@@ -1,0 +1,7 @@
+defaults:
+  - _self_
+  - train
+
+dataframe_path: C:\Users\samen\Desktop\term9\CryptoPredictions\api\outputs\2023-04-18\15-44-17\
+
+

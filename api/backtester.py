@@ -9,33 +9,31 @@ from omegaconf import DictConfig
 from utils.reporter import Reporter
 from path_definition import HYDRA_PATH
 
-global df
+df = None
+address = ""
 
-@hydra.main(config_path=HYDRA_PATH, config_name="train")
+@hydra.main(config_path=HYDRA_PATH, config_name="backtest")
 def backTester(cfg: DictConfig):
-    cfg.save_dir = os.getcwd()
-    reporter = Reporter(cfg)
-    reporter.setup_saving_dirs(cfg.save_dir)
-
-    address = os.path.join(reporter.parent_dir,
-                           f'{reporter.symbol}_{reporter.model}_backTest.csv')
-
+    global address
+    global df
+    address = os.path.join(cfg.dataframe_path)
     df = pd.read_csv(address)
     bt = Backtest(df, MyCandlesStrat, cash=100_000, commission=.002)
     stat = bt.run()
     logging.info(stat)
-    save_report(stat, reporter)
+    save_report(stat, address)
 
 
-def save_report(stat, reporter):
-    address = os.path.join(reporter.parent_dir,
-                           f'{reporter.symbol}_{reporter.model}_backTest_report.txt')
-
+def save_report(stat, address):
+    a = str(stat)
+    print(a)
+    print(11)
     with open(address, "w") as text_file:
-        text_file.write(stat)
+        text_file.write(a)
 
 
 def SIGNAL():
+    global df
     return df.signal
 
 
