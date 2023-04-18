@@ -12,23 +12,30 @@ from path_definition import HYDRA_PATH
 df = None
 address = ""
 
+
 @hydra.main(config_path=HYDRA_PATH, config_name="backtest")
 def backTester(cfg: DictConfig):
     global address
     global df
-    address = os.path.join(cfg.dataframe_path)
-    df = pd.read_csv(address)
+    table_list = []
+    new_table_list = []
+    address = cfg.dataframe_path
+    for filename in os.listdir(address):
+        if filename.endswith('.csv'):
+            table_list.append(filename)
+    filename = table_list[0]
+    file_address = os.path.join(address, filename)
+    df = pd.read_csv(file_address)
     bt = Backtest(df, MyCandlesStrat, cash=100_000, commission=.002)
     stat = bt.run()
     logging.info(stat)
-    save_report(stat, address)
+    save_report(stat, address, filename)
 
 
-def save_report(stat, address):
+def save_report(stat, address, fname):
     a = str(stat)
-    print(a)
-    print(11)
-    with open(address, "w") as text_file:
+    new_add = os.path.join(address, f'{fname}.txt')
+    with open(new_add, "w") as text_file:
         text_file.write(a)
 
 
