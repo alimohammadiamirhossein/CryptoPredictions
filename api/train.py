@@ -1,9 +1,5 @@
 import logging
 import os
-from itertools import chain
-import sys
-
-# sys.path.append('../')
 
 import hydra
 from omegaconf import DictConfig
@@ -13,15 +9,13 @@ from factory.trainer import Trainer
 from factory.evaluator import Evaluator
 from factory.profit_calculator import ProfitCalculator
 import pandas as pd
-import numpy as np
 
 from sklearn.model_selection import TimeSeriesSplit
 from path_definition import HYDRA_PATH
-# from schedulers import SCHEDULERS
+
 from utils.reporter import Reporter
 from data_loader.creator import create_dataset, preprocess
 
-# from utils.save_load import load_snapshot, save_snapshot, setup_training_dir
 
 logger = logging.getLogger(__name__)
 

@@ -21,6 +21,8 @@ class ProfitCalculator:
         self.is_regression = args.model.is_regression
         self.save_dir = args.save_dir
         self.signal = None
+        self.predicted_high = None
+        self.predicted_low = None
 
     def profit_calculator(self):
         self.low_calculator()
@@ -42,7 +44,8 @@ class ProfitCalculator:
 
     def setup_saving_dirs(self, parent_dir):
         os.makedirs(os.path.join(parent_dir, 'backTest_dataset'), exist_ok=False)
-        address = os.path.join(self.parent_dir, '', f'{self.symbol}_{self.model}_backTest.csv')
+        address = os.path.join(self.reporter.parent_dir,
+                               f'{self.reporter.symbol}_{self.reporter.model}_backTest.csv')
         return address
 
     def split_the_dataset(self, dataset):
@@ -61,8 +64,8 @@ class ProfitCalculator:
                                         }, axis=1)
         train_dataset, valid_dataset = self.split_the_dataset(dataset_tmp)
         Trainer(self.args, train_dataset, None, self.model).train()
-        test_dataX = valid_dataset.drop(['prediction'], axis=1)
-        self.predicted_low = self.model.predict(test_dataX)
+        test_data_x = valid_dataset.drop(['prediction'], axis=1)
+        self.predicted_low = self.model.predict(test_data_x)
 
     def high_calculator(self):
         logger.info("High price training started.")
@@ -71,5 +74,5 @@ class ProfitCalculator:
                                           }, axis=1)
         train_dataset, valid_dataset = self.split_the_dataset(dataset_tmp)
         Trainer(self.args, train_dataset, None, self.model).train()
-        test_dataX = valid_dataset.drop(['prediction'], axis=1)
-        self.predicted_high = self.model.predict(test_dataX)
+        test_data_x = valid_dataset.drop(['prediction'], axis=1)
+        self.predicted_high = self.model.predict(test_data_x)
