@@ -7,16 +7,9 @@ import numpy as np
 import pandas as pd
 
 logger = logging.getLogger(__name__)
-from path_definition import *
-from os.path import join
-from metrics import METRICS
 from models import MODELS
 from factory.trainer import Trainer
-from factory.evaluator import Evaluator
-from utils.reporter import Reporter
 from backtest.strategies import Strategies
-from backtest.myCandlesStrat import MyCandlesStrat
-from backtesting import Backtest
 
 
 class ProfitCalculator:
