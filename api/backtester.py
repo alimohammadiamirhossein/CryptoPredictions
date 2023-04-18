@@ -1,5 +1,38 @@
+import logging
+import os
+
 from backtesting import Strategy, Backtest
 import pandas as pd
+
+import hydra
+from omegaconf import DictConfig
+from utils.reporter import Reporter
+from path_definition import HYDRA_PATH
+
+global df
+
+@hydra.main(config_path=HYDRA_PATH, config_name="train")
+def backTester(cfg: DictConfig):
+    cfg.save_dir = os.getcwd()
+    reporter = Reporter(cfg)
+    reporter.setup_saving_dirs(cfg.save_dir)
+
+    address = os.path.join(reporter.parent_dir,
+                           f'{reporter.symbol}_{reporter.model}_backTest.csv')
+
+    df = pd.read_csv(address)
+    bt = Backtest(df, MyCandlesStrat, cash=100_000, commission=.002)
+    stat = bt.run()
+    logging.info(stat)
+    save_report(stat, reporter)
+
+
+def save_report(stat, reporter):
+    address = os.path.join(reporter.parent_dir,
+                           f'{reporter.symbol}_{reporter.model}_backTest_report.txt')
+
+    with open(address, "w") as text_file:
+        text_file.write(stat)
 
 
 def SIGNAL():
@@ -26,7 +59,5 @@ class MyCandlesStrat(Strategy):
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('C:/Users/samen/Desktop/term9/CryptoPredictions/profit_calculation.csv')
-    bt = Backtest(df, MyCandlesStrat, cash=100_000, commission=.002)
-    stat = bt.run()
-    print(stat)
+    backTester()
+

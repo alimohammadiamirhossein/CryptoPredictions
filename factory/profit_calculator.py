@@ -61,7 +61,7 @@ class ProfitCalculator:
         dataset_tmp = self.dataset.drop(['predicted_high'], axis=1, inplace=False)
         logger.info("Low price training started.")
         dataset_tmp = dataset_tmp.rename({'predicted_low': 'prediction',
-                                        }, axis=1)
+                                          }, axis=1)
         train_dataset, valid_dataset = self.split_the_dataset(dataset_tmp)
         Trainer(self.args, train_dataset, None, self.model).train()
         test_data_x = valid_dataset.drop(['prediction'], axis=1)
