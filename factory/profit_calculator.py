@@ -37,8 +37,10 @@ class ProfitCalculator:
         predicteds = pd.DataFrame(arr, columns=['predicted_low', 'predicted_high', 'predicted_mean'])
         self.original.reset_index(drop=True, inplace=True)
         df = pd.concat([self.original, predicteds], axis=1)
-        signal = np.array(Strategies(df).signal1()).T
-        signal = pd.DataFrame(signal, columns=['signal'])
+        s1 = np.array(Strategies(df).signal1())
+        s2 = np.array(Strategies(df).signal2())
+        signal = np.row_stack((s1, s2)).T
+        signal = pd.DataFrame(signal, columns=['signal1', 'signal2'])
         final = pd.concat([self.original, signal], axis=1)
         return final
 

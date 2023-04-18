@@ -33,6 +33,7 @@ def backTester(cfg: DictConfig):
 
 
 def save_report(stat, address, fname):
+    fname = fname.split('.')[0]
     a = str(stat)
     new_add = os.path.join(address, f'{fname}.txt')
     with open(new_add, "w") as text_file:
@@ -41,7 +42,7 @@ def save_report(stat, address, fname):
 
 def SIGNAL():
     global df
-    return df.signal
+    return df.signal1
 
 
 class MyCandlesStrat(Strategy):
