@@ -18,7 +18,6 @@ def backTester(cfg: DictConfig):
     global address
     global df
     table_list = []
-    new_table_list = []
     address = cfg.dataframe_path
     for filename in os.listdir(address):
         if filename.endswith('.csv'):

@@ -76,6 +76,5 @@ def train(cfg: DictConfig):
     reporter.print_pretty_metrics(logger)
     reporter.save_metrics()
 
-
 if __name__ == '__main__':
     train()
