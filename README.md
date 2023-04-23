@@ -6,6 +6,26 @@ CryptoPredictions is an open-source toolbox for price prediction/forecasting a s
 
 ![Prediction](https://user-images.githubusercontent.com/45646480/218425368-6761a215-04f8-43c3-96eb-d2df0468455f.png)
 
+# Why CryptoPredictions?
+
+This library offers you a wide range of services that you may not find anywhere else.
+The list of library facilities is as follows:
+
+* One of our serious problems at the beginning of the work was lack of dataset. Many papers and repos fetched the data through different websites, such as Yahoo Finance. On the other hand, we have used platforms, involving Bitmex, which allow the user to use different currencies in a common structure.
+
+* Before this library, one probably had to run different codes for different models. In such circumstances, it is not fair to compare the models. However, CryptoPredictions enable users to analyse a unified and fair evaluation.
+
+* By using Hydra, userss have a better structure and understanding of the arguments. Furthermore, it is far easier to run a code on different settings and  check the result.
+
+* Despite the superb performance of some models in terms of accuracy, trading with them requires a well-defined strategy. Our backtester could inform you how effective your model is in the real circumstances.
+
+* There are different metrics for the evaluation of the models helping us define what we want and measure progress towards the goals set, allowing us to identify if we are improving and correct what is not working. Using one metric is not usually sufficient, and to evaluate a model we should analyse a variety of metrics.(to get a better understanding of the pros and cons of each metric you can read the metric part of [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/Report.pdf).)
+
+* We have seen many repos that fetched the indicators from different websites. There are some problems with this method, such as increasing the number of null rows or the lack of information of an indicator for all cryprocurrencies. Instead of fetching indicators, CryptoPredictions calculates them which doesn't carry the mentioned problems and could be generalized to other datasets.
+
+* Although this library is a small-scale project with probably some flaws, we hope it can give you ideas so that you can develop much better projects.
+ 
+
 # Overview
 
 The main parts of the library are as follows:
