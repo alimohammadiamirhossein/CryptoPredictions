@@ -9,21 +9,21 @@ CryptoPredictions is an open-source toolbox for price prediction/forecasting a s
 # Why CryptoPredictions?
 
 This library offers you a wide range of services that you may not find anywhere else.
-The list of library facilities is as follows:
+The exclusive benefits of CryptoPredictions are:
 
-* One of our serious problems at the beginning of the work was lack of dataset. Many papers and repos fetched the data through different websites, such as Yahoo Finance. On the other hand, we have used platforms, involving Bitmex, which allow the user to use different currencies in a common structure.
+* At the outset of our work, we faced a serious challenge of dataset scarcity. Many papers and repos fetched the data through different websites, such as Yahoo Finance. However, we have overcome this obstacle by using platforms such as Bitmex, which offer a common structure for different currencies.
 
-* Before this library, one probably had to run different codes for different models. In such circumstances, it is not fair to compare the models. However, CryptoPredictions enable users to analyse a unified and fair evaluation.
+* Before the advent of our library, users had to run different codes for different models, making it difficult to compare them fairly. Fortunately, CryptoPredictions has made it possible to conduct a unified and equitable evaluation of different models. With Hydra, users can easily structure and understand arguments, making it easier to run codes on different settings and check results.
 
-* By using Hydra, userss have a better structure and understanding of the arguments. Furthermore, it is far easier to run a code on different settings and  check the result.
+* By using Hydra, users have a better understanding of the arguments. Furthermore, it is far easier to run a code on different settings and  check the result.
 
-* Despite the superb performance of some models in terms of accuracy, trading with them requires a well-defined strategy. Our backtester could inform you how effective your model is in the real circumstances.
+* While some models may perform exceptionally well in terms of accuracy, they often require a well-defined strategy for successful trading. Our backtester can help you determine the effectiveness of your model in real-world scenarios.
 
-* There are different metrics for the evaluation of the models helping us define what we want and measure progress towards the goals set, allowing us to identify if we are improving and correct what is not working. Using one metric is not usually sufficient, and to evaluate a model we should analyse a variety of metrics.(to get a better understanding of the pros and cons of each metric you can read the metric part of [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/Report.pdf).)
+* We understand that evaluating models can be challenging, which is why we offer a variety of metrics to help you measure progress towards accomplishing your tasks. By analyzing multiple metrics, you can identify areas for improvement and correct what is not working. To learn more about the pros and cons of each metric, please refer to the metrics section [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/Report.pdf).
 
-* We have seen many repos that fetched the indicators from different websites. There are some problems with this method, such as increasing the number of null rows or the lack of information of an indicator for all cryprocurrencies. Instead of fetching indicators, CryptoPredictions calculates them which doesn't carry the mentioned problems and could be generalized to other datasets.
+* At CryptoPredictions, we do not fetch indicators from different websites, because it leads to problems such as null rows and the lack of information on indicators for all cryptocurrencies. Instead, CryptoPredictions calculates them in a way that doesn't carry the mentioned problems and could be generalized to other datasets.
 
-* Although this library is a small-scale project with probably some flaws, we hope it can give you ideas so that you can develop much better projects.
+* We hope that it will inspire you to develop even better projects, and we look forward to your feedback. If you find CryptoPredictions useful and valuable, we would greatly appreciate it if you could take a moment to give it a star on Github. Your support would mean a lot to us and help us to continue improving the library for the community :)
  
 
 # Overview
