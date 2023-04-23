@@ -84,7 +84,7 @@ If you have any issues and errors install hydra like below:
 ```bash
 pip install hydra-core --upgrade
 ```
-for more information about Hydra and config files please visit [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/ARGS_README.md#Hydra).
+for more information about Hydra and config files please visit [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/Documents/ARGS_README.md#Hydra).
 
 # Dataset
 
@@ -153,7 +153,7 @@ As a conclusion, we tested models using different cryptocurrencies on the variou
 
 # Report
 
-To gain a better understanding of the models, metrics, and validation method used in this library, we prepared a report and you can read it from [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/Report.pdf).
+To gain a better understanding of the models, metrics, and validation method used in this library, we prepared a report and you can read it from [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/Documents/Report.pdf).
 
 # Our Team
 
