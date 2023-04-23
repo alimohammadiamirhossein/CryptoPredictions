@@ -127,9 +127,41 @@ The list of of available indicators supported by the library is as follow:
 
 </div>
 
+# Metrics
+
+The essential step in any machine learning model is to evaluate the accuracy of the model. The list of of available metrics supported by the library is as follow:
+
+
+<div align="center">
+
+|  	                                    |                 |      	                            | 
+| :---:                                 |  :---:          |  :---:                            | 
+| accuracy_score                        | MAE             |  SMAPE                            | 
+| f1_score                              | RMSE            |  MASE                             | 
+| recall_score                          | MAPE            |  Stochastic                       | 
+| precision_score                       |                 |                                   | 
+
+
+</div>
+
+# Results 
+
+As a conclusion, we tested models using different cryptocurrencies on the various available metrics and the result is as follows:
+
+![image](https://user-images.githubusercontent.com/45646480/233838187-1d80c7d9-46d1-4072-a67e-1ba69c4f4268.png)
+
+
 # Report
 
 To gain a better understanding of the models, metrics, and validation method used in this library, we prepared a report and you can read it from [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/Report.pdf).
+
+# Our Team
+
+* Amirhossein Alimohammadi
+* Ahmad Nosratbakhsh
+
+<img src="https://user-images.githubusercontent.com/45646480/233836824-13a268e7-9464-46df-95bd-1ee8631519a8.jpg" data-canonical-src="https://user-images.githubusercontent.com/45646480/233836824-13a268e7-9464-46df-95bd-1ee8631519a8.jpg" width="540" />
+
 
 
 
