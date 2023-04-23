@@ -12,17 +12,15 @@ The main parts of the library are as follows:
 
 ```
 CryptoPredictions
-├── api
-|   ├── preprocess.py                   -- script to run the preprocessor module
-|   ├── train.py                        -- script to train the models, runs factory.trainer.py
-│   ├── evaluate.py                     -- script to evaluate the models, runs factory.evaluator.py
+├── train.py                            -- script to train the models, runs factory.trainer.py
+├── backtester.py                       -- script to calculate the profit by selecting a strategy to buy and sell based on the prediction
 ├── models                    
 │   ├── orbit.py
 |   ├── prophet.py
 |   ├── LSTM.py
 │   ├── sarimax.py
 |   ├── random_forest.py
-|   ├── GRU.py
+|   ├── xgboost.py
 |   ├── ...
 ├── data_loader
 |   ├── CoinMarketDataset.py        
