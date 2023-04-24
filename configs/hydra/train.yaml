@@ -5,8 +5,8 @@ defaults:
   - metrics
 
 validation_method: simple #simple - cross_validation
-symbol: XBT
-load_path: C:\Users\samen\Desktop\term9\CryptoPredictions\data\XBTUSD-1h-data.csv
+symbol: ETH
+load_path: C:\Users\samen\Desktop\term9\CryptoPredictions\data\ETHUSD-1d-data.csv
 save_dir:
 dataset_path:
 

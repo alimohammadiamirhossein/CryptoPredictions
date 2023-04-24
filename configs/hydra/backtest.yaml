@@ -2,6 +2,7 @@ defaults:
   - _self_
   - train
 
-dataframe_path: C:\Users\samen\Desktop\term9\CryptoPredictions\api\outputs\2023-04-18\17-54-28\backTest_dataset\
+#dataframe_path: C:\Users\samen\Desktop\term9\CryptoPredictions\outputs\2023-04-24\17-35-52\backTest_dataset\
+dataframe_path: C:\Users\samen\Desktop\term9\CryptoPredictions\outputs\2023-04-24\17-35-52\backTest_dataset\
 
 
