@@ -132,17 +132,17 @@ The list of of available indicators supported by the library is as follow:
 The essential step in any machine learning model is to evaluate the accuracy of the model. The list of of available metrics supported by the library is as follow:
 
 
-<div align="center">
+* accuracy_score: Number of correct predictions/Total number of predictions
+* precision_score:  the proportion of positively predicted labels that are actually correct
+* recall_score: the model's ability to correctly predict the positives out of actual positives
+* f1_score: 2.Precision.Recall/(Precision+Recall)
+* MAE: Mean Absolute Error
+* MAPE: Mean Absolute Percentage Error
+* MASE: Mean Absolute Scaled Error
+* RMSE: Root Mean Square Error
+* SMAPE: Symmetric Mean Absolute Percentage Error
+* Stochastic: the possibility that the outcome is not that expected, given that both the model and parameters are correct 
 
-|  	                                    |                 |      	                            | 
-| :---:                                 |  :---:          |  :---:                            | 
-| accuracy_score                        | MAE             |  SMAPE                            | 
-| f1_score                              | RMSE            |  MASE                             | 
-| recall_score                          | MAPE            |  Stochastic                       | 
-| precision_score                       |                 |                                   | 
-
-
-</div>
 
 # Results 
 
