@@ -10,18 +10,33 @@ from omegaconf import DictConfig
 from utils.reporter import Reporter
 from path_definition import HYDRA_PATH
 from data_loader.indicators import *
-
 import numpy as np
+
 df = None
 address = ""
+strategy_signal = ""
+buy_stop_loss = 0.8
+buy_take_profit = 1.2
+sell_stop_loss = 1.2
+sell_take_profit = 0.8
 
 
 @hydra.main(config_path=HYDRA_PATH, config_name="backtest")
 def backTester(cfg: DictConfig):
     global address
     global df
+    global strategy_signal
+    global buy_stop_loss
+    global buy_take_profit
+    global sell_stop_loss
+    global sell_take_profit
     table_list = []
     address = cfg.dataframe_path
+    strategy_signal = cfg.strategy_signal
+    buy_stop_loss = cfg.buy_stop_loss
+    buy_take_profit = cfg.buy_take_profit
+    sell_stop_loss = cfg.sell_stop_loss
+    sell_take_profit = cfg.sell_take_profit
     for filename in os.listdir(address):
         if filename.endswith('.csv'):
             table_list.append(filename)
@@ -44,6 +59,7 @@ def add_signals(df):
     sigs = pd.DataFrame(sigs, columns=['signal3', 'signal4'])
     df = pd.concat([df, sigs], axis=1)
     return df
+
 
 def add_indicators(df, cfg):
     df['sma_30'] = sma(np.array(df.Close), 30)
@@ -71,7 +87,11 @@ def save_report(stat, address, fname):
 
 def SIGNAL():
     global df
-    return df.signal1
+    global strategy_signal
+    if strategy_signal is "":
+        return df.signal1
+    else:
+        return df[strategy_signal]
 
 
 class MyCandlesStrat(Strategy):
@@ -81,20 +101,19 @@ class MyCandlesStrat(Strategy):
 
     def next(self):
         super().next()
+        global buy_stop_loss
+        global buy_take_profit
+        global sell_stop_loss
+        global sell_take_profit
         if self.signal1 == 2:
-            # sl1 = 0.94 * self.data.Close[-1]
-            sl1 = 0.9 * self.data.Close[-1]
-            tp1 = self.data.Close[-1]
-            # self.buy(sl=sl1, tp=tp1)
-            self.buy(sl=sl1)
+            sl1 = buy_stop_loss * self.data.Close[-1]
+            tp1 = buy_take_profit * self.data.Close[-1]
+            self.buy(sl=sl1, tp=tp1)
         elif self.signal1 == 1:
-            # sl1 = 1.06 * self.data.Close[-1]
-            sl1 = 1.7 * self.data.Close[-1]
-            tp1 = self.data.Close[-1]
-            # self.sell(sl=sl1, tp=tp1)
-            self.sell(sl=sl1)
+            sl1 = sell_stop_loss * self.data.Close[-1]
+            tp1 = sell_take_profit * self.data.Close[-1]
+            self.sell(sl=sl1, tp=tp1)
 
 
 if __name__ == '__main__':
     backTester()
-
