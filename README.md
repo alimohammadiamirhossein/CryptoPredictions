@@ -150,7 +150,7 @@ As a conclusion, we tested models using different cryptocurrencies on the variou
 
 ![image](https://user-images.githubusercontent.com/45646480/233838187-1d80c7d9-46d1-4072-a67e-1ba69c4f4268.png)
 
-You can see other graphs (here)[https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/Documents/results.md].
+You can see other graphs [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/Documents/results.md).
 
 
 # Report
