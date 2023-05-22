@@ -155,7 +155,7 @@ You can see other graphs [here](https://github.com/alimohammadiamirhossein/Crypt
 
 # Report
 
-To gain a better understanding of the models, metrics, and validation method used in this library, we prepared a report and you can read it from [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/Documents/Report.pdf).
+To gain a better understanding of the models, metrics, and validation method used in this library, we prepared a report and you can read it from [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/CryptoPredictions.pdf).
 
 # Our Team
 
