@@ -1,0 +1,9 @@
+defaults:
+  - _self_
+  - train
+
+#dataframe_path: C:\Users\samen\Desktop\term9\CryptoPredictions\outputs\2023-04-24\17-35-52\backTest_dataset\
+dataframe_path: C:\Users\samen\Desktop\term9\CryptoPredictions\
+base_period: 720
+test_period: 24
+tresh_hold: 0.5
