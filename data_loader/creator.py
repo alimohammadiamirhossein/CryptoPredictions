@@ -38,7 +38,7 @@ def preprocess(dataset, cfg, logger=None):
                                       high_=np.array(df.High), open_=np.array(df.open),
                                       close_=np.array(df.close), volume_=np.array(df.volume))
 
-    indicators_names = list(cfg.dataset_loader.indicators_names.split(', '))
+    indicators_names = list(cfg.dataset_loader.indicators_names.split(' '))
 
     arr1, dates = add_indicators_to_dataset(indicators, indicators_names, dates, mean_=np.array(df.Mean))
     arr = np.concatenate((arr[100:], arr1), axis=1)

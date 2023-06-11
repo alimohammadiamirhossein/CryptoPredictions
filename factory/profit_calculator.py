@@ -41,7 +41,8 @@ class ProfitCalculator:
         s2 = np.array(Strategies(df).signal2())
         signal = np.row_stack((s1, s2)).T
         signal = pd.DataFrame(signal, columns=['signal1', 'signal2'])
-        final = pd.concat([self.original, signal], axis=1)
+        # final = pd.concat([self.original, signal], axis=1)
+        final = pd.concat([df, signal], axis=1)
         return final
 
     def setup_saving_dirs(self, parent_dir):

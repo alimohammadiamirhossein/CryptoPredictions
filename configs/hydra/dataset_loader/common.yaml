@@ -4,7 +4,7 @@ train_end_date: 2021-11-10 9:30:00
 valid_start_date: 2021-11-10 10:30:00
 valid_end_date: 2023-01-16 10:30:00
 features: Date, open, High, Low, close, volume #make sure to have Date High Low
-indicators_names: rsi, macd
+indicators_names: rsi macd
 
 
 #short_wma, wma, long_wma, ewma, tema, macd, stoch1, stoch2, wpr, rsi_experts, rsi, srsi, bolinger_up,
