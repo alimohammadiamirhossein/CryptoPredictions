@@ -150,12 +150,12 @@ As a conclusion, we tested models using different cryptocurrencies on the variou
 
 ![image](https://user-images.githubusercontent.com/45646480/233838187-1d80c7d9-46d1-4072-a67e-1ba69c4f4268.png)
 
-You can see other graphs (here)[https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/Documents/results.md].
+You can see other graphs [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/Documents/results.md).
 
 
 # Report
 
-To gain a better understanding of the models, metrics, and validation method used in this library, we prepared a report and you can read it from [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/Documents/Report.pdf).
+To gain a better understanding of the models, metrics, and validation method used in this library, we prepared a report and you can read it from [here](https://github.com/alimohammadiamirhossein/CryptoPredictions/blob/main/CryptoPredictions.pdf).
 
 # Our Team
 
