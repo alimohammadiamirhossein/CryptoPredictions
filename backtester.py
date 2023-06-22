@@ -88,7 +88,7 @@ def save_report(stat, address, fname):
 def SIGNAL():
     global df
     global strategy_signal
-    if strategy_signal is "":
+    if strategy_signal == "":
         return df.signal1
     else:
         return df[strategy_signal]
@@ -105,15 +105,58 @@ class MyCandlesStrat(Strategy):
         global buy_take_profit
         global sell_stop_loss
         global sell_take_profit
+
+        if self.data._Data__i < 10:
+            return
+
+        condition = True
+        if self.data.confidence_rate[-1] < 20 or self.data.confidence_rate[-2] < 20:
+        # if self.data.confidence_rate[-1] + self.data.confidence_rate[-2] < 50:
+            condition = False
+        condition = True
         if self.signal1 == 2:
             sl1 = buy_stop_loss * self.data.Close[-1]
             tp1 = buy_take_profit * self.data.Close[-1]
-            self.buy(sl=sl1, tp=tp1)
+            if condition:
+                self.buy(sl=sl1, tp=tp1)
+
         elif self.signal1 == 1:
             sl1 = sell_stop_loss * self.data.Close[-1]
             tp1 = sell_take_profit * self.data.Close[-1]
-            self.sell(sl=sl1, tp=tp1)
+            if condition:
+                self.sell(sl=sl1, tp=tp1)
+
+
 
 
 if __name__ == '__main__':
     backTester()
+
+
+
+# class MyCandlesStrat(Strategy):
+#     def init(self):
+#         super().init()
+#         self.signal1 = self.I(SIGNAL)
+#
+#     def next(self):
+#         super().next()
+#         global buy_stop_loss
+#         global buy_take_profit
+#         global sell_stop_loss
+#         global sell_take_profit
+#         k = 10
+#         ranges = 0
+#         if self.data._Data__i > k:
+#           for i in range(k):
+#             ranges += (self.data.High[-1*i] - self.data.Low[-1*i])
+#         ranges = ranges/k
+#         if self.signal1 == 2:
+#             sl1 =  self.data.Close[-1] - ranges/2
+#             tp1 =  self.data.Close[-1] + ranges/2
+#             self.buy(sl=sl1, tp=tp1)
+#         elif self.signal1 == 1:
+#             sl1 = self.data.Close[-1] + ranges/2
+#             tp1 = self.data.Close[-1] - ranges/2
+#             self.sell(sl=sl1, tp=tp1)
+#

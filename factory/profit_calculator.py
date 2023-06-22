@@ -78,3 +78,6 @@ class ProfitCalculator:
         Trainer(self.args, train_dataset, None, self.model).train()
         test_data_x = valid_dataset.drop(['prediction'], axis=1)
         self.predicted_high = self.model.predict(test_data_x)
+
+
+

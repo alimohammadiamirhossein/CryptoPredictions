@@ -29,8 +29,9 @@ def phasePrediction(cfg: DictConfig):
     file_address = os.path.join(address, filename)
     df = pd.read_csv(file_address)
     # phase_calculator1(df, base_period, test_period, tresh_hold)
-    # conformal_prediction(df)
-    # percentage_differences(df)
+    # conformal_prediction(df, address)
+    percentage_differences(df)
+    # TODO daily dataset
     # RMSFE(df)
 
 
@@ -74,7 +75,8 @@ def RMSFE(df):
 
 def percentage_differences(df):
     cou = [0, 0, 0, 0, 0]
-    tresh = [0.06, 0.5, 1.0, 2, 4]
+    # tresh = [0.06, 0.5, 1.0, 2, 4]
+    tresh = [1, 2, 4, 8, 32]
     for index, row in df.iterrows():
         if index == 0:
             continue
@@ -96,10 +98,11 @@ def percentage_differences(df):
         print(str(100*cou[i]/sum_)[:5], end=', ')
 
 
-def conformal_prediction(df):
+def conformal_prediction(df, address):
     calibration_set = {}
     counter = 0
     low_confidences = []
+    confidence_rates = [0] * df.shape[0]
     for index, row in df.iterrows():
         b = df.iloc[index]
         quantile_index = -1
@@ -118,6 +121,7 @@ def conformal_prediction(df):
         if len(keys_) > 0:
             prob = (1+quantile_index)/len(keys_)
             confidence_rate = (1 - prob)*100
+            confidence_rates[index] = confidence_rate
             if confidence_rate < 20:
                 counter += 1
                 low_confidences.append(index)
@@ -127,17 +131,22 @@ def conformal_prediction(df):
         #update calibration set
         calibration_set[index] = error
         calibration_set = dict(sorted(calibration_set.items(), key=lambda item: item[1]))
+###########################################
+    # print(counter , len(keys_))
+    # hyper_params = list(range(3, 8))
+    # for hyper_param in hyper_params:
+    #     test_low_confidence_counter = 0
+    #     for i in range(1, len(low_confidences)):
+    #         if low_confidences[i] - low_confidences[i-1] <= hyper_param:
+    #             test_low_confidence_counter += 1
+    #     print(hyper_param, str(100*test_low_confidence_counter/ len(low_confidences))[:5])
 
-    print(counter , len(keys_))
-    hyper_params = list(range(3, 8))
-    for hyper_param in hyper_params:
-        test_low_confidence_counter = 0
-        for i in range(1, len(low_confidences)):
-            if low_confidences[i] - low_confidences[i-1] <= hyper_param:
-                test_low_confidence_counter += 1
-        print(hyper_param, str(100*test_low_confidence_counter/ len(low_confidences))[:5])
-
-
+##########################################
+    confidence_rates = pd.DataFrame(confidence_rates, columns=['confidence_rate'])
+    final = pd.concat([df, confidence_rates], axis=1)
+    final.to_csv(address+'XBT_prophet_backTest2.csv', encoding='utf-8', index=False)
+    # print(final)
+    # print(address)
 
 
 def phase_calculator1(df, base_period, test_period, tresh_hold):
