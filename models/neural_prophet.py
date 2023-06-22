@@ -14,9 +14,11 @@ class Neural_Prophet:
         self.regressors = []
 
     def fit(self, data_x):
-        yearly_seasonality = False,
-        weekly_seasonality = False,
+        yearly_seasonality = False
+        weekly_seasonality = False
         daily_seasonality = False
+        n_lags = 30
+
         if self.is_daily:
             n_lags = 2 * 30
             yearly_seasonality = True
