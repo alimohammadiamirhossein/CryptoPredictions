@@ -6,6 +6,7 @@ jsonlines
 jupyter
 keras~=2.12.0
 matplotlib
+neuralprophet
 numpy~=1.19
 omegaconf
 orbit-ml~=1.1.3
